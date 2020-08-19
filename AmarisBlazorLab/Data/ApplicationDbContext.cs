@@ -11,6 +11,8 @@ namespace AmarisBlazorLab.Data
     {
         public DbSet<Project> Projects { get; set; }
         public DbSet<UserProject> UserProjects { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<ProjectCategory> ProjectCategories { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -21,6 +23,7 @@ namespace AmarisBlazorLab.Data
             base.OnModelCreating(builder);
 
             builder.Entity<UserProject>().HasKey(up => new { up.UserId, up.ProjectId });
+            builder.Entity<ProjectCategory>().HasKey(pc => new { pc.ProjectId, pc.CategoryId });
         }
     }
 }
