@@ -5,6 +5,6 @@ namespace AmarisBlazorLab.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        //public IList<UserProject> UserProjects { get; set; }
+        public IList<UserProject> UserProjects { get; set; }
     }
 }
