@@ -1,4 +1,40 @@
-﻿<h3>Project List</h3>
+﻿@inject ProjectService Service
+
+<Heading Size="HeadingSize.Is3">All projects</Heading>
+
+@if (Projects.Count == 0)
+{
+    <Alert Color="Color.Info" Visible="true">
+        <AlertMessage>There's no project.</AlertMessage>
+        <AlertDescription>
+            <AuthorizeView Roles="Admin">
+                <Authorized>
+                    <a href="/administrations/project" class="btn btn-link">Create a project</a>
+                </Authorized>
+                <NotAuthorized>
+                    You can ask an administrator to create a project.
+                </NotAuthorized>
+            </AuthorizeView>
+        </AlertDescription>
+    </Alert>
+}
+else
+{
+    <ul class="list-group">
+        @foreach (var project in Projects)
+        {
+            <li class="list-group-item">@project.Name</li>
+        }
+    </ul>
+}
 
 @code {
+    List<Project> Projects = new List<Project>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        Projects = Service.GetAll();
+    }
 }
