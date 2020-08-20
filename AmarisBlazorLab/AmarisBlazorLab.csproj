@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20200819100003_InheritIdentityUserAndChangeIdToInt.cs" />
     <Compile Remove="Data\Migrations\20200819100003_InheritIdentityUserAndChangeIdToInt.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200820090307_AddMaterialTableAndMaterialTypeTable.cs" />
+    <Compile Remove="Data\Migrations\20200820090307_AddMaterialTableAndMaterialTypeTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +22,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>
