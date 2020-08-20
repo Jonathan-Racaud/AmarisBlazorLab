@@ -10,6 +10,5 @@ namespace AmarisBlazorLab.Core.Repositories
     public interface IUserRepository : IRepository<ApplicationUser>
     {
         User GetWithRoles(string id);
-        IEnumerable<Project> GetUserProjects();
     }
 }

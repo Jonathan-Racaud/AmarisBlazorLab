@@ -17,11 +17,6 @@ namespace AmarisBlazorLab.Data.Repositories
 
         }
 
-        public IEnumerable<Project> GetUserProjects()
-        {
-            throw new NotImplementedException();
-        }
-
         public User GetWithRoles(string id)
         {
             var applicationUser = Get(id);

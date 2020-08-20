@@ -10,9 +10,14 @@
     <Compile Remove="Data\Migrations\20200819100003_InheritIdentityUserAndChangeIdToInt.Designer.cs" />
     <Compile Remove="Data\Migrations\20200820090307_AddMaterialTableAndMaterialTypeTable.cs" />
     <Compile Remove="Data\Migrations\20200820090307_AddMaterialTableAndMaterialTypeTable.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200820094331_Test.cs" />
+    <Compile Remove="Data\Migrations\20200820094331_Test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazorise" Version="0.9.1.2" />
+    <PackageReference Include="Blazorise.Bootstrap" Version="0.9.1.2" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="0.9.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.6" />

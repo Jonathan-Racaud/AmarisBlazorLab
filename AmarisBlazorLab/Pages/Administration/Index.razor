@@ -4,6 +4,14 @@
 
 <UserList/>
 
-@code {
+<button class="btn btn-primary" @onclick="OpenUserForm">Create user</button>
 
+
+@code {
+    bool IsUserFormOpened = false;
+
+    protected void OpenUserForm()
+    {
+        IsUserFormOpened = true;
+    }
 }

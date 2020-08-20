@@ -18,6 +18,9 @@ using AmarisBlazorLab.Data;
 using AmarisBlazorLab.Core.Domain;
 using AmarisBlazorLab.Core;
 using AmarisBlazorLab.Services;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
 
 namespace AmarisBlazorLab
 {
@@ -47,6 +50,13 @@ namespace AmarisBlazorLab
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<UserService>();
+
+            services.AddBlazorise(options =>
+            {
+                options.ChangeTextOnKeyPress = true;
+            })
+                .AddBootstrapProviders()
+                .AddFontAwesomeIcons();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,6 +85,10 @@ namespace AmarisBlazorLab
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.ApplicationServices
+                .UseBootstrapProviders()
+                .UseFontAwesomeIcons();
 
             app.UseEndpoints(endpoints =>
             {
