@@ -1,5 +1,15 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<Jumbotron Background="Background.Dark" Margin="Margin.Is4.FromBottom">
+    <JumbotronTitle Size="JumbotronTitleSize.Is4">Amaris Blazor Lab</JumbotronTitle>
+    <JumbotronSubtitle>
+        See and manage your projects inside of the Amaris lab.
+    </JumbotronSubtitle>
+    <Divider></Divider>
+    <Paragraph>
+        This is a demo project that allows the creation of projects, assignment of users to the projects and their modification.
+        It also serve as a POC for an 'ERP' style app using Blazor server-side.
 
-Welcome to your new app.
+        This project uses the EntityFrameworkCore and IdentityFramework for managing connection to the database and authorization/authentication.
+    </Paragraph>
+</Jumbotron>

@@ -1,11 +1,11 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@*<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">Amaris Blazor Lab</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
-</div>
+</div>*@
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+@*<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
@@ -31,4 +31,47 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
-}
+}*@
+
+<Bar Mode="BarMode.VerticalPopout" CollapseMode="BarCollapseMode.Small"
+        Breakpoint="Breakpoint.Desktop" NavigationBreakpoint="Breakpoint.Tablet"
+        ThemeContrast="ThemeContrast.Dark">
+    <BarBrand>
+        <BarItem>
+            <BarLink To="/">
+                <BarIcon IconName="IconName.Home" />
+                Amaris Blazor Lab
+            </BarLink>
+        </BarItem>
+    </BarBrand>
+    <BarMenu>
+        <BarStart>
+            <AuthorizeView Roles="Admin">
+                <BarItem>
+                    <BarLink To="/administration">
+                        <BarIcon IconName="IconName.Dashboard" />
+                        Administration
+                    </BarLink>
+                </BarItem>
+            </AuthorizeView>
+            <AuthorizeView>
+                <BarItem>
+                    <BarLink To="/projects">
+                        <BarIcon IconName="IconName.Book" />
+                        Projects
+                    </BarLink>
+                </BarItem>
+                <BarItem>
+                    <BarLink To="/users">
+                        <BarIcon IconName="IconName.Users" />
+                        Users
+                    </BarLink>
+                </BarItem>
+            </AuthorizeView>
+        </BarStart>
+
+        <BarEnd>
+            <LoginDisplay />
+        </BarEnd>
+    </BarMenu>
+</Bar>

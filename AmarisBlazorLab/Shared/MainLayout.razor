@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-
+@*
 <div class="sidebar">
     <NavMenu />
 </div>
@@ -13,4 +13,20 @@
     <div class="content px-4">
         @Body
     </div>
-</div>
+</div>*@
+<Layout Sider="true">
+    <LayoutSider>
+        <LayoutSiderContent>
+            <NavMenu/>
+        </LayoutSiderContent>
+    </LayoutSider>
+    <LayoutHeader>
+
+    </LayoutHeader>
+    <LayoutContent Margin="Margin.Is2">
+        @Body
+    </LayoutContent>
+    <LayoutFooter>
+
+    </LayoutFooter>
+</Layout>
