@@ -1,29 +1,48 @@
 ﻿@inject UserService Service
 
-<h3>Users</h3>
+<Heading Size="HeadingSize.Is3">All users</Heading>
 
 @if (Users.Count == 0)
 {
-<div>
-    <p class="alert-danger">Error fetching the list of users.</p>
-</div>
+    <Alert>
+        <AlertMessage>Error getting the list of users.</AlertMessage>
+    </Alert>
 }
 else
 {
-    <div>
-        <ul class="list-group">
-            @foreach (var user in Users)
-            {
-                <li class="list-group-item">
-                    @if (user.Roles.Contains("Admin"))
-                    {
-                        <span class="badge badge-pill badge-primary">Admin</span>
-                    }
-                    @user.Email
-                </li>
-            }
-        </ul>
-    </div>
+    <ListGroup>
+        @foreach (var user in Users)
+        {
+            <ListGroupItem>
+                <Container Fluid="true">
+                    <Row>
+                        <Column ColumnSize="ColumnSize.Is1">
+                            @if (user.Roles.Contains("Admin"))
+                            {
+                                <Badge Color="Color.Info">Admin</Badge>
+                            }
+                        </Column>
+                        <Column ColumnSize="ColumnSize.Is10">
+                            @user.Email
+                        </Column>
+                        <Column ColumnSize="ColumnSize.Is1">
+                            <Buttons>
+                                <AuthorizeView Roles="Admin">
+                                    @*There's an issue with intellisense as Link must be an ambiguous tag*@
+                                    <Blazorise.Link To='@($"/administration/user&user_id={user.Id}")' Class="btn">
+                                        <Icon Name="IconName.Edit" />
+                                    </Blazorise.Link>
+                                </AuthorizeView>
+                                <Blazorise.Link To="/user" Class="btn">
+                                    <Icon Name="IconName.Eye" />
+                                </Blazorise.Link>
+                            </Buttons>  
+                        </Column>
+                    </Row>
+                </Container>
+            </ListGroupItem>
+        }
+    </ListGroup>
 }
 
 @code {

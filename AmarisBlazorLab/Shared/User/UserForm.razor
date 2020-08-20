@@ -1,0 +1,55 @@
+﻿@inject UserService UserService
+@inject ProjectService ProjectService
+@inject RoleService RoleService
+
+<Form>
+    <Field>
+        <FieldLabel>Email</FieldLabel>
+        <TextEdit Role="TextRole.Email" Placeholder="Enter email" @bind-Text="UserRegistration.Email"/>
+    </Field>
+    <Field>
+        <FieldLabel>Password</FieldLabel>
+        <TextEdit Role="TextRole.Password" Placeholder="Enter password" @bind-Text="UserRegistration.Password"/>
+    </Field>
+    <Field>
+        <FieldLabel>Assign roles</FieldLabel>
+        <Select @bind-SelectedValues="UserRegistration.Roles">
+            @foreach (var role in Roles)
+            {
+                <SelectItem TValue="string" Value="role.Id">role.Name</SelectItem>
+            }
+        </Select>
+    </Field>
+    @*<Field>
+        <FieldLabel>Assign to projects</FieldLabel>
+        <Select @bind-SelectedValues="UserRegistration.Projects">
+            @foreach (var project in Projects)
+            {
+                <SelectItem TValue="Project" Value="project">@project.Name</SelectItem>
+            }
+        </Select>
+    </Field>*@
+    <Button Color="Color.Primary" @onclick="FormSubmitted">Submit</Button>
+</Form>
+
+@code {
+    List<Project> Projects = new List<Project>();
+    List<Role> Roles = new List<Role>();
+    UserRegistration UserRegistration = new UserRegistration();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        Projects = ProjectService.GetAll();
+        Roles = RoleService.GetAll();
+    }
+
+    [Parameter]
+    public EventCallback<UserRegistration> OnFormSubmitted { get; set; }
+
+    private async void FormSubmitted()
+    {
+        await OnFormSubmitted.InvokeAsync(UserRegistration);
+    }
+}

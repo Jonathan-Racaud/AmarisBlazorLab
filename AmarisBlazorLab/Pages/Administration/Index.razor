@@ -1,17 +1,39 @@
 ﻿@page "/administration"
+@inject UserService UserService
 
-<h3>Administration</h3>
+<Heading Size="HeadingSize.Is1">Administration</Heading>
+<Divider />
 
-<UserList/>
+<Container>
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12">
+            <UserList />
+        </Column>
+    </Row>
+    <Row Margin="Margin.Is2.FromTop">
+        <Column ColumnSize="ColumnSize.Is2">
+            <Button Color="Color.Primary" @onclick="@(() => UserFormModal.Show())">Create user</Button>
+        </Column>
+    </Row>
+</Container>
 
-<button class="btn btn-primary" @onclick="OpenUserForm">Create user</button>
+<Modal @ref="UserFormModal">
+    <ModalBackdrop />
+    <ModalHeader>
+        <ModalTitle>Create user</ModalTitle>
+        <CloseButton Clicked="@(() => UserFormModal.Hide())"></CloseButton>
+    </ModalHeader>
+    <ModalBody>
+        <UserForm OnFormSubmitted="CreateUser"/>
+    </ModalBody>
+</Modal>
 
 
 @code {
-    bool IsUserFormOpened = false;
+    Modal UserFormModal;
 
-    protected void OpenUserForm()
+    private void CreateUser(UserRegistration user)
     {
-        IsUserFormOpened = true;
+        UserService.Create(user);
     }
 }

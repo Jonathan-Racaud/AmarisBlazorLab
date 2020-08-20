@@ -50,8 +50,13 @@ namespace AmarisBlazorLab.Services
             return users;
         }
 
-        public bool Create(User user)
+        public bool Create(UserRegistration userIn)
         {
+            var user = new ApplicationUser
+            {
+                Email = userIn.Email,
+                PasswordHash = userIn.Password
+            };
             unitOfWork.Users.Add(user);
             unitOfWork.Complete();
             return true;
