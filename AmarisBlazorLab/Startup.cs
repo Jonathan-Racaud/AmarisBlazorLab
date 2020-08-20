@@ -17,6 +17,7 @@ using AmarisBlazorLab.Areas.Identity;
 using AmarisBlazorLab.Data;
 using AmarisBlazorLab.Core.Domain;
 using AmarisBlazorLab.Core;
+using AmarisBlazorLab.Services;
 
 namespace AmarisBlazorLab
 {
@@ -42,7 +43,10 @@ namespace AmarisBlazorLab
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
+            
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

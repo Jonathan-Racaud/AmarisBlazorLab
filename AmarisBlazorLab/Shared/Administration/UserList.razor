@@ -1,0 +1,34 @@
+﻿@inject UserService Service
+
+<h3>Users</h3>
+
+@if (Users.Count == 0)
+{
+<div>
+    <p class="alert-danger">Error fetching the list of users.</p>
+</div>
+}
+else
+{
+    <div>
+        <ul class="list-group">
+            @foreach (var user in Users)
+            {
+                <li class="list-group-item">
+                    @user.Email
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    List<ApplicationUser> Users;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        Users = Service.GetAll();
+    }
+}

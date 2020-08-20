@@ -16,27 +16,33 @@ namespace AmarisBlazorLab.Services
             this.unitOfWork = unitOfWork;
         }
 
-        public ApplicationUser GetUser(string id)
+        public ApplicationUser Get(string id)
         {
             var user = unitOfWork.Users.Get(id);
 
             return user;
         }
-        public bool CreateUser(ApplicationUser user)
+
+        public List<ApplicationUser> GetAll()
+        {
+            return unitOfWork.Users.GetAll().ToList();
+        }
+
+        public bool Create(ApplicationUser user)
         {
             unitOfWork.Users.Add(user);
             unitOfWork.Complete();
             return true;
         }
 
-        public bool DeleteUser(ApplicationUser user)
+        public bool Delete(ApplicationUser user)
         {
             unitOfWork.Users.Remove(user);
             unitOfWork.Complete();
             return true;
         }
 
-        public bool UpdateUser(ApplicationUser user, ApplicationUser newUser)
+        public bool Update(ApplicationUser user, ApplicationUser newUser)
         {
             var oldUser = unitOfWork.Users.Get(user.Id);
             oldUser = newUser;
