@@ -13,16 +13,16 @@
     </Field>
     <Field>
         <FieldLabel>Assign roles</FieldLabel>
-        <Select @bind-SelectedValues="UserRegistration.Roles">
+        <Select TValue="string" @bind-SelectedValue="UserRegistration.Role">
             @foreach (var role in Roles)
             {
-                <SelectItem TValue="string" Value="role.Id">role.Name</SelectItem>
+                <SelectItem TValue="string" Value="role.Name">@role.Name</SelectItem>
             }
         </Select>
     </Field>
     @*<Field>
         <FieldLabel>Assign to projects</FieldLabel>
-        <Select @bind-SelectedValues="UserRegistration.Projects">
+        <Select TValue="Project" SelectedValues="UserRegistration.Projects" SelectedValuesChanged="@OnSelectedProjectsChanged">
             @foreach (var project in Projects)
             {
                 <SelectItem TValue="Project" Value="project">@project.Name</SelectItem>
@@ -34,7 +34,7 @@
 
 @code {
     List<Project> Projects = new List<Project>();
-    List<Role> Roles = new List<Role>();
+    List<IdentityRole> Roles = new List<IdentityRole>();
     UserRegistration UserRegistration = new UserRegistration();
 
     protected override void OnInitialized()
@@ -43,10 +43,17 @@
 
         Projects = ProjectService.GetAll();
         Roles = RoleService.GetAll();
+        UserRegistration.Role = Roles[0].Name;
     }
 
     [Parameter]
     public EventCallback<UserRegistration> OnFormSubmitted { get; set; }
+
+    //private void OnSelectedProjectsChanged(IReadOnlyList<Project> projects)
+    //{
+    //    UserRegistration.Projects.Clear();
+    //    UserRegistration.Projects.AddRange(projects);
+    //}
 
     private async void FormSubmitted()
     {

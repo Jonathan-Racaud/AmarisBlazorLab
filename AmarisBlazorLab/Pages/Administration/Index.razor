@@ -17,23 +17,49 @@
     </Row>
 </Container>
 
-<Modal @ref="UserFormModal">
+<Modal @ref="UserFormModal" Closed="OnModalClosed">
     <ModalBackdrop />
-    <ModalHeader>
-        <ModalTitle>Create user</ModalTitle>
-        <CloseButton Clicked="@(() => UserFormModal.Hide())"></CloseButton>
-    </ModalHeader>
-    <ModalBody>
-        <UserForm OnFormSubmitted="CreateUser"/>
-    </ModalBody>
+    <ModalContent Centered="true">
+        <ModalHeader>
+            <ModalTitle>Create user</ModalTitle>
+            <CloseButton Clicked="@(() => UserFormModal.Hide())"></CloseButton>
+        </ModalHeader>
+        <ModalBody>
+            <UserForm OnFormSubmitted="CreateUser" />
+        </ModalBody>
+        <ModalFooter>
+            <Alert @ref="UserCreationAlertSuccess" Color="Color.Success">
+                <AlertMessage>User created successfully!</AlertMessage>
+            </Alert>
+            <Alert @ref="UserCreationAlertFailure" Color="Color.Danger">
+                <AlertMessage>Error creating user.</AlertMessage>
+            </Alert>
+        </ModalFooter>
+    </ModalContent>
 </Modal>
-
 
 @code {
     Modal UserFormModal;
+    Alert UserCreationAlertSuccess;
+    Alert UserCreationAlertFailure;
 
-    private void CreateUser(UserRegistration user)
+    private async void CreateUser(UserRegistration user)
     {
-        UserService.Create(user);
+        var isCreated = await UserService.Create(user);
+
+        if (isCreated)
+        {
+            UserCreationAlertSuccess.Show();
+        }
+        else
+        {
+            UserCreationAlertFailure.Show();
+        }
+    }
+
+    private void OnModalClosed()
+    {
+        UserCreationAlertSuccess.Hide();
+        UserCreationAlertFailure.Hide();
     }
 }

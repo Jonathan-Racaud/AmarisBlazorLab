@@ -1,6 +1,8 @@
 ﻿using AmarisBlazorLab.Core;
+using AmarisBlazorLab.Core.Domain;
 using AmarisBlazorLab.Core.Repositories;
 using AmarisBlazorLab.Data.Repositories;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +22,16 @@ namespace AmarisBlazorLab.Data
 
         public IMaterialTypeRepository MaterialTypes { get; private set; }
 
-        public UnitOfWork(ApplicationDbContext context)
+        public IIdentityRoleRepository Roles { get; private set; }
+
+        public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             Projects = new ProjectRepository(_context);
-            Users = new UserRepository(_context);
+            Users = new UserRepository(_context, userManager);
             Categories = new CategoryRepository(_context);
             MaterialTypes = new MaterialTypeRepository(_context);
+            Roles = new RoleRepository(_context);
         }
 
         public int Complete()

@@ -1,4 +1,5 @@
 ﻿using AmarisBlazorLab.Core.Domain;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,7 +16,7 @@ namespace AmarisBlazorLab.Core.DTO
         [Required]
         public string Password { get; set; }
         [Required]
-        public List<string> Roles { get; set; }
+        public string Role { get; set; }
 
         public List<Project> Projects { get; set; }
     }

@@ -1,6 +1,7 @@
 ﻿using AmarisBlazorLab.Core;
 using AmarisBlazorLab.Core.Domain;
 using AmarisBlazorLab.Core.DTO;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting.Internal;
 using System;
 using System.Collections.Generic;
@@ -50,14 +51,36 @@ namespace AmarisBlazorLab.Services
             return users;
         }
 
-        public bool Create(UserRegistration userIn)
+        public async Task<bool> Create(UserRegistration userIn)
         {
+            if (string.IsNullOrEmpty(userIn.Email) ||
+                string.IsNullOrEmpty(userIn.Password) ||
+                string.IsNullOrEmpty(userIn.Role))
+            { 
+                return false;
+            }
+
             var user = new ApplicationUser
             {
                 Email = userIn.Email,
-                PasswordHash = userIn.Password
+                NormalizedEmail = userIn.Email.ToUpper(),
+                UserName = userIn.Email,
+                NormalizedUserName = userIn.Email.ToUpper(),
+                EmailConfirmed = true
             };
+            var password = new PasswordHasher<ApplicationUser>().HashPassword(user, userIn.Password);
+            user.PasswordHash = password;
             unitOfWork.Users.Add(user);
+            unitOfWork.Complete();
+
+            var roleAdded = await unitOfWork.Users.AssignRoles(user, new List<string> { userIn.Role });
+            if (!roleAdded)
+            {
+                unitOfWork.Users.Remove(user);
+                unitOfWork.Complete();
+                return false;
+            }
+
             unitOfWork.Complete();
             return true;
         }
