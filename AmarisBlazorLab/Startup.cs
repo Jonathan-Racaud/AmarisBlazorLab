@@ -50,6 +50,7 @@ namespace AmarisBlazorLab
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<UserService>();
+            services.AddScoped<ProjectService>();
 
             services.AddBlazorise(options =>
             {
