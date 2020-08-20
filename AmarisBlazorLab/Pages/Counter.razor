@@ -1,5 +1,6 @@
 ﻿@page "/counter"
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Admin")]
+@inherits CounterBase
 
 <h1>Counter</h1>
 
