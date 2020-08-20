@@ -17,42 +17,42 @@ namespace AmarisBlazorLab.Data.Repositories
             Context = context;
         }
 
-        public void Add(TEntity entity)
+        virtual public void Add(TEntity entity)
         {
             Context.Set<TEntity>().Add(entity);
         }
 
-        public void AddRange(IEnumerable<TEntity> entities)
+        virtual public void AddRange(IEnumerable<TEntity> entities)
         {
             Context.Set<TEntity>().AddRange(entities);
         }
 
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        virtual public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
             return Context.Set<TEntity>().Where(predicate);
         }
 
-        public TEntity Get(int id)
+        virtual public TEntity Get(int id)
         {
             return Context.Set<TEntity>().Find(id);
         }
 
-        public TEntity Get(string id)
+        virtual public TEntity Get(string id)
         {
             return Context.Set<TEntity>().Find(id);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        virtual public IEnumerable<TEntity> GetAll()
         {
             return Context.Set<TEntity>().ToList();
         }
 
-        public void Remove(TEntity entity)
+        virtual public void Remove(TEntity entity)
         {
             Context.Set<TEntity>().Remove(entity);
         }
 
-        public void RemoveRange(IEnumerable<TEntity> entities)
+        virtual public void RemoveRange(IEnumerable<TEntity> entities)
         {
             Context.Set<TEntity>().RemoveRange(entities);
         }

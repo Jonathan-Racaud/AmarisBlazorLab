@@ -15,6 +15,10 @@ else
             @foreach (var user in Users)
             {
                 <li class="list-group-item">
+                    @if (user.Roles.Contains("Admin"))
+                    {
+                        <span class="badge badge-pill badge-primary">Admin</span>
+                    }
                     @user.Email
                 </li>
             }
@@ -23,7 +27,7 @@ else
 }
 
 @code {
-    List<ApplicationUser> Users;
+    List<User> Users;
 
     protected override void OnInitialized()
     {
