@@ -43,20 +43,24 @@
 
         Projects = ProjectService.GetAll();
         Roles = RoleService.GetAll();
-        UserRegistration.Role = Roles[0].Name;
+
+        Clear();
     }
 
     [Parameter]
     public EventCallback<UserRegistration> OnFormSubmitted { get; set; }
 
-    //private void OnSelectedProjectsChanged(IReadOnlyList<Project> projects)
-    //{
-    //    UserRegistration.Projects.Clear();
-    //    UserRegistration.Projects.AddRange(projects);
-    //}
+    public void Clear()
+    {
+        UserRegistration.Email = string.Empty;
+        UserRegistration.Password = string.Empty;
+        UserRegistration.Role = Roles[0].Name;
+        UserRegistration.Projects = new List<Project>();
+    }
 
     private async void FormSubmitted()
     {
         await OnFormSubmitted.InvokeAsync(UserRegistration);
+        Clear();
     }
 }
