@@ -37,6 +37,11 @@ namespace AmarisBlazorLab.Data.Repositories
             return Context.Set<TEntity>().Find(id);
         }
 
+        public TEntity Get(string id)
+        {
+            return Context.Set<TEntity>().Find(id);
+        }
+
         public IEnumerable<TEntity> GetAll()
         {
             return Context.Set<TEntity>().ToList();

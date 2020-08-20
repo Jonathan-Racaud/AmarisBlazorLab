@@ -14,6 +14,7 @@ namespace AmarisBlazorLab.Core.Repositories
 
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         TEntity Get(int id);
+        TEntity Get(string id);
         IEnumerable<TEntity> GetAll();
 
         void Remove(TEntity entity);
