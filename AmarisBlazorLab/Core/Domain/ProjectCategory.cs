@@ -1,4 +1,4 @@
-﻿namespace AmarisBlazorLab.Models
+﻿namespace AmarisBlazorLab.Core.Domain
 {
     public class ProjectCategory
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AmarisBlazorLab.Models
+namespace AmarisBlazorLab.Core.Domain
 {
     public class Category
     {

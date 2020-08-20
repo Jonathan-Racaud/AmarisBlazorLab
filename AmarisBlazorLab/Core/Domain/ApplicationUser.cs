@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
-namespace AmarisBlazorLab.Models
+namespace AmarisBlazorLab.Core.Domain
 {
     public class ApplicationUser : IdentityUser
     {

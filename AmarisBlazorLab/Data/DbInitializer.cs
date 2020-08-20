@@ -1,5 +1,5 @@
 ﻿using AmarisBlazorLab.Data.Migrations;
-using AmarisBlazorLab.Models;
+using AmarisBlazorLab.Core.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

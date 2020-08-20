@@ -21,7 +21,7 @@ namespace AmarisBlazorLab.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AmarisBlazorLab.Models.ApplicationUser", b =>
+            modelBuilder.Entity("AmarisBlazorLab.Core.Domain.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -86,7 +86,7 @@ namespace AmarisBlazorLab.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("AmarisBlazorLab.Models.Category", b =>
+            modelBuilder.Entity("AmarisBlazorLab.Core.Domain.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -101,7 +101,7 @@ namespace AmarisBlazorLab.Data.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("AmarisBlazorLab.Models.Project", b =>
+            modelBuilder.Entity("AmarisBlazorLab.Core.Domain.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -124,7 +124,7 @@ namespace AmarisBlazorLab.Data.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("AmarisBlazorLab.Models.ProjectCategory", b =>
+            modelBuilder.Entity("AmarisBlazorLab.Core.Domain.ProjectCategory", b =>
                 {
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
@@ -139,7 +139,7 @@ namespace AmarisBlazorLab.Data.Migrations
                     b.ToTable("ProjectCategories");
                 });
 
-            modelBuilder.Entity("AmarisBlazorLab.Models.UserProject", b =>
+            modelBuilder.Entity("AmarisBlazorLab.Core.Domain.UserProject", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -289,37 +289,37 @@ namespace AmarisBlazorLab.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("AmarisBlazorLab.Models.Project", b =>
+            modelBuilder.Entity("AmarisBlazorLab.Core.Domain.Project", b =>
                 {
-                    b.HasOne("AmarisBlazorLab.Models.ApplicationUser", "Owner")
+                    b.HasOne("AmarisBlazorLab.Core.Domain.ApplicationUser", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId");
                 });
 
-            modelBuilder.Entity("AmarisBlazorLab.Models.ProjectCategory", b =>
+            modelBuilder.Entity("AmarisBlazorLab.Core.Domain.ProjectCategory", b =>
                 {
-                    b.HasOne("AmarisBlazorLab.Models.Category", "Category")
+                    b.HasOne("AmarisBlazorLab.Core.Domain.Category", "Category")
                         .WithMany("ProjectCategories")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AmarisBlazorLab.Models.Project", "Project")
+                    b.HasOne("AmarisBlazorLab.Core.Domain.Project", "Project")
                         .WithMany("ProjectCategories")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AmarisBlazorLab.Models.UserProject", b =>
+            modelBuilder.Entity("AmarisBlazorLab.Core.Domain.UserProject", b =>
                 {
-                    b.HasOne("AmarisBlazorLab.Models.Project", "Project")
+                    b.HasOne("AmarisBlazorLab.Core.Domain.Project", "Project")
                         .WithMany("UserProjects")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AmarisBlazorLab.Models.ApplicationUser", "User")
+                    b.HasOne("AmarisBlazorLab.Core.Domain.ApplicationUser", "User")
                         .WithMany("UserProjects")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -337,7 +337,7 @@ namespace AmarisBlazorLab.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("AmarisBlazorLab.Models.ApplicationUser", null)
+                    b.HasOne("AmarisBlazorLab.Core.Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -346,7 +346,7 @@ namespace AmarisBlazorLab.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("AmarisBlazorLab.Models.ApplicationUser", null)
+                    b.HasOne("AmarisBlazorLab.Core.Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -361,7 +361,7 @@ namespace AmarisBlazorLab.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AmarisBlazorLab.Models.ApplicationUser", null)
+                    b.HasOne("AmarisBlazorLab.Core.Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -370,7 +370,7 @@ namespace AmarisBlazorLab.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("AmarisBlazorLab.Models.ApplicationUser", null)
+                    b.HasOne("AmarisBlazorLab.Core.Domain.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
