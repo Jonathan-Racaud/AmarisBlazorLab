@@ -1,5 +1,6 @@
 ﻿using AmarisBlazorLab.Core;
 using AmarisBlazorLab.Core.Domain;
+using AmarisBlazorLab.Core.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,56 @@ namespace AmarisBlazorLab.Services
             var projects = unitOfWork.Projects.GetAll().Take(10).ToList();
 
             return projects;
+        }
+
+        public bool Create(ProjectRegistration projectIn)
+        {
+            if (string.IsNullOrEmpty(projectIn.Name) ||
+                (projectIn.Owner == null) ||
+                (projectIn.Categories.Count < 1))
+            {
+                return false;
+            }
+
+            var project = new Project
+            {
+                Name = projectIn.Name,
+                Description = projectIn.Description,
+                Owner = projectIn.Owner
+            };
+
+            unitOfWork.Projects.Add(project);
+            unitOfWork.Complete();
+
+            if (projectIn.Contributors.Count > 0)
+            {
+                var userProjects = new List<UserProject>();
+                foreach (var user in projectIn.Contributors)
+                {
+                    var userProject = new UserProject
+                    {
+                        Project = project,
+                        User = user
+                    };
+                    userProjects.Add(userProject);
+                }
+                unitOfWork.UserProjects.AddRange(userProjects);
+                unitOfWork.Complete();
+            }
+
+            var projectCategories = new List<ProjectCategory>();
+            foreach (var category in projectIn.Categories)
+            {
+                var projectCategory = new ProjectCategory
+                {
+                    Project = project,
+                    Category = category
+                };
+            }
+            unitOfWork.ProjectCategories.AddRange(projectCategories);
+            unitOfWork.Complete();
+
+            return true;
         }
     }
 }

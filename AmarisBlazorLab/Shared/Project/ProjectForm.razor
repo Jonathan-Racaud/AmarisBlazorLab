@@ -1,0 +1,71 @@
+﻿@inject ProjectService ProjectService
+@inject UserService UserService
+
+    <Form>
+        <Field>
+            <FieldLabel>Name</FieldLabel>
+            <TextEdit Role="TextRole.Text" Placeholder="Enter project's name" @bind-Text="Project.Name" />
+        </Field>
+        <Field>
+            <FieldLabel>Description</FieldLabel>
+            <MemoEdit @bind-Text="Project.Description"></MemoEdit>
+        </Field>
+        <Field>
+            <FieldLabel>Assign project's owner</FieldLabel>
+            <Select TValue="ApplicationUser" @bind-SelectedValue="Project.Owner">
+                @foreach (var user in Users)
+                {
+                    <SelectItem TValue="ApplicationUser" Value="user">@user.Email</SelectItem>
+                }
+            </Select>
+        </Field>
+        <Field>
+            <FieldLabel>Assign contributors</FieldLabel>
+            <Select TValue="ApplicationUser" SelectedValues="@Project.Contributors" SelectedValuesChanged="@OnSelectedContributorsChanged">
+                @foreach (var user in Users)
+                {
+                    <SelectItem TValue="ApplicationUser" Value="user">@user.Email</SelectItem>
+                }
+            </Select>
+        </Field>
+        <Field>
+            <FieldLabel>Assign categories</FieldLabel>
+            <Select TValue="Category" SelectedValues="@Project.Categories" SelectedValuesChanged="@OnSelectedCategoriesChanged">
+                @foreach (var category in Categories)
+                {
+                    <SelectItem TValue="Category" Value="category">@category.Name</SelectItem>
+                }
+            </Select>
+        </Field>
+        <Button Color="Color.Primary" @onclick="FormSubmitted">Submit</Button>
+    </Form>
+
+@code {
+    ProjectRegistration Project;
+    List<User> Users = new List<User>();
+
+    [Parameter]
+    public EventCallback<ProjectRegistration> OnFormSubmitted { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Users = UserService.GetAll();
+        Clear();
+    }
+
+    private async void FormSubmitted()
+    {
+        await OnFormSubmitted.InvokeAsync(Project);
+        Clear();
+    }
+
+    public void Clear()
+    {
+        Project = new ProjectRegistration();
+    }
+
+    void OnSelectedContributorsChanged(IReadOnlyList<ApplicationUser> users)
+    {
+        Console.WriteLine(users);
+    }
+}

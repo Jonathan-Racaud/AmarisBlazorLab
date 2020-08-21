@@ -23,6 +23,8 @@ namespace AmarisBlazorLab.Data
         public IMaterialTypeRepository MaterialTypes { get; private set; }
 
         public IIdentityRoleRepository Roles { get; private set; }
+        public IUserProjectRepository UserProjects { get; private set; }
+        public IProjectCategoryRepository ProjectCategories { get; private set; }
 
         public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -32,6 +34,8 @@ namespace AmarisBlazorLab.Data
             Categories = new CategoryRepository(_context);
             MaterialTypes = new MaterialTypeRepository(_context);
             Roles = new RoleRepository(_context);
+            UserProjects = new UserProjectRepository(_context);
+            ProjectCategories = new ProjectCategoryRepository(_context);
         }
 
         public int Complete()

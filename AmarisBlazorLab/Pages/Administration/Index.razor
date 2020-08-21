@@ -1,5 +1,6 @@
 ﻿@page "/administration"
 @inject UserService UserService
+@inject ProjectService ProjectService
 
 <Heading Size="HeadingSize.Is1">Administration</Heading>
 <Divider />
@@ -15,9 +16,19 @@
             <Button Color="Color.Primary" @onclick="@(() => UserFormModal.Show())">Create user</Button>
         </Column>
     </Row>
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12">
+            <ProjectList />
+        </Column>
+    </Row>
+    <Row Margin="Margin.Is2.FromTop">
+        <Column ColumnSize="ColumnSize.Is2">
+            <Button Color="Color.Primary" @onclick="@(() => ProjectFormModal.Show())">Create project</Button>
+        </Column>
+    </Row>
 </Container>
 
-<Modal @ref="UserFormModal" Closed="OnModalClosed">
+<Modal @ref="UserFormModal" Closed="OnUserModalClosed">
     <ModalBackdrop />
     <ModalContent Centered="true">
         <ModalHeader>
@@ -38,10 +49,35 @@
     </ModalContent>
 </Modal>
 
+<Modal @ref="ProjectFormModal" Closed="OnProjectModalClosed">
+    <ModalBackdrop />
+    <ModalContent Centered="true">
+        <ModalHeader>
+            <ModalTitle>Create project</ModalTitle>
+            <CloseButton Clicked="@(() => ProjectFormModal.Hide())"></CloseButton>
+        </ModalHeader>
+        <ModalBody>
+            <ProjectForm OnFormSubmitted="CreateProject" />
+        </ModalBody>
+        <ModalFooter>
+            <Alert @ref="ProjectCreationAlertSuccess" Color="Color.Success">
+                <AlertMessage>Project created successfully!</AlertMessage>
+            </Alert>
+            <Alert @ref="ProjectCreationAlertFailure" Color="Color.Danger">
+                <AlertMessage>Error creating project.</AlertMessage>
+            </Alert>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
 @code {
     Modal UserFormModal;
     Alert UserCreationAlertSuccess;
     Alert UserCreationAlertFailure;
+
+    Modal ProjectFormModal;
+    Alert ProjectCreationAlertSuccess;
+    Alert ProjectCreationAlertFailure;
 
     private async void CreateUser(UserRegistration user)
     {
@@ -57,9 +93,29 @@
         }
     }
 
-    private void OnModalClosed()
+    private void OnUserModalClosed()
     {
         UserCreationAlertSuccess.Hide();
         UserCreationAlertFailure.Hide();
+    }
+
+    private void CreateProject(ProjectRegistration project)
+    {
+        var isCreated = ProjectService.Create(project);
+
+        if (isCreated)
+        {
+            ProjectCreationAlertSuccess.Show();
+        }
+        else
+        {
+            ProjectCreationAlertFailure.Show();
+        }
+    }
+
+    private void OnProjectModalClosed()
+    {
+        ProjectCreationAlertSuccess.Hide();
+        ProjectCreationAlertFailure.Hide();
     }
 }
