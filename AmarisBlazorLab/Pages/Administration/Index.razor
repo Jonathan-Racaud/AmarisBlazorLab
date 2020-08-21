@@ -86,10 +86,12 @@
 
         if (isCreated)
         {
+            UserCreationAlertFailure.Hide();
             UserCreationAlertSuccess.Show();
         }
         else
         {
+            UserCreationAlertSuccess.Hide();
             UserCreationAlertFailure.Show();
         }
     }
@@ -106,10 +108,12 @@
 
         if (isCreated)
         {
+            ProjectCreationAlertFailure.Hide();
             ProjectCreationAlertSuccess.Show();
         }
         else
         {
+            ProjectCreationAlertSuccess.Hide();
             ProjectCreationAlertFailure.Show();
         }
     }

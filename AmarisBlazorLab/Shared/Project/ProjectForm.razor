@@ -22,7 +22,7 @@
     </Field>
     <Field>
         <FieldLabel>Assign contributors</FieldLabel>
-        <Select Multiple="true" TValue="string" SelectedValues="Contributors" SelectedValuesChanged="OnSelectedContributorsChanged">
+        <Select @ref="ContributorSelect" Multiple="true" TValue="string" SelectedValues="Contributors" SelectedValuesChanged="OnSelectedContributorsChanged">
             @foreach (var user in Users)
             {
                 <SelectItem TValue="string" Value="user.Id">@user.Email</SelectItem>
@@ -42,7 +42,12 @@
 </Form>
 
 @code {
-    ProjectRegistration Project;
+    [Parameter]
+    public EventCallback<ProjectRegistration> OnFormSubmitted { get; set; }
+
+    [Parameter]
+    public ProjectRegistration Project { get; set; }
+
     List<ApplicationUser> Users = new List<ApplicationUser>();
     List<Category> Categories = new List<Category>();
 
@@ -50,8 +55,7 @@
     List<string> Contributors = new List<string>();
     List<int> CategoriesId = new List<int>();
 
-    [Parameter]
-    public EventCallback<ProjectRegistration> OnFormSubmitted { get; set; }
+    Select<string> ContributorSelect;
 
     protected override void OnInitialized()
     {
@@ -63,13 +67,19 @@
     private async void FormSubmitted()
     {
         await OnFormSubmitted.InvokeAsync(Project);
-        Init();
+        Init(true);
     }
 
-    public void Init()
+    // Currently there is an issue with the Select component that do not get the changes from the code.
+    // so if you add changes here for updating the component it will not work.
+    // Solution might be to have two different form depending on the action we want to perform
+    public void Init(bool force = false)
     {
-        Project = new ProjectRegistration();
-        Project.Owner = Users[0];
+        if (Project == null || force)
+        {
+            Project = new ProjectRegistration();
+            Project.Owner = Users[0];
+        }
     }
 
     // For some reason I cannot make the Select binding work with the ApplicationUser or Category or any other user defined types directly

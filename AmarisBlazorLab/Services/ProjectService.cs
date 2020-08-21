@@ -54,40 +54,29 @@ namespace AmarisBlazorLab.Services
             unitOfWork.Projects.Add(project);
             unitOfWork.Complete();
 
-            var userProjects = new List<UserProject>();
-            userProjects.Add(new UserProject
-            {
-                Project = project,
-                User = project.Owner
-            });
+            UpdateProjectContributors(project, projectIn);
+            UpdateProjectCategories(project, projectIn);
+            return true;
+        }
 
-            if (projectIn.Contributors.Count > 0)
+        public bool Update(ProjectRegistration projectIn)
+        {
+            if (string.IsNullOrEmpty(projectIn.Name) ||
+                (projectIn.Owner == null) ||
+                (projectIn.Categories.Count < 1))
             {
-                foreach (var user in projectIn.Contributors)
-                {
-                    var userProject = new UserProject
-                    {
-                        Project = project,
-                        User = user
-                    };
-                    userProjects.Add(userProject);
-                }
+                return false;
             }
-            unitOfWork.UserProjects.AddRange(userProjects);
+
+            var project = unitOfWork.Projects.Find(p => p.Name == projectIn.Name).Single();
+
+            project.Name = projectIn.Name;
+            project.Owner = projectIn.Owner;
+            project.Description = projectIn.Description;
             unitOfWork.Complete();
 
-            var projectCategories = new List<ProjectCategory>();
-            foreach (var category in projectIn.Categories)
-            {
-                var projectCategory = new ProjectCategory
-                {
-                    Project = project,
-                    Category = category
-                };
-                projectCategories.Add(projectCategory);
-            }
-            unitOfWork.ProjectCategories.AddRange(projectCategories);
-            unitOfWork.Complete();
+            UpdateProjectContributors(project, projectIn);
+            UpdateProjectCategories(project, projectIn);
 
             return true;
         }
@@ -129,6 +118,60 @@ namespace AmarisBlazorLab.Services
             }
 
             return true;
+        }
+
+        private void UpdateProjectContributors(Project project, ProjectRegistration projectIn)
+        {
+            var userProjects = new List<UserProject>();
+            if (!project.UserProjects.Any(up => up.UserId == projectIn.Owner.Id))
+            {
+                userProjects.Add(new UserProject
+                {
+                    Project = project,
+                    User = project.Owner
+                });
+            }
+
+            if (projectIn.Contributors.Count > 0)
+            {
+                foreach (var user in projectIn.Contributors)
+                {
+                    if (!project.UserProjects.Any(up => up.UserId == user.Id))
+                    {
+                        var userProject = new UserProject
+                        {
+                            Project = project,
+                            User = user
+                        };
+                        userProjects.Add(userProject);
+                    }
+                }
+            }
+
+            if (userProjects.Count > 0)
+            {
+                unitOfWork.UserProjects.AddRange(userProjects);
+            }
+            unitOfWork.Complete();
+        }
+
+        private void UpdateProjectCategories(Project project, ProjectRegistration projectIn)
+        {
+            var projectCategories = new List<ProjectCategory>();
+            foreach (var category in projectIn.Categories)
+            {
+                if (!project.ProjectCategories.Any(pc => pc.CategoryId == category.Id))
+                {
+                    var projectCategory = new ProjectCategory
+                    {
+                        Project = project,
+                        Category = category
+                    };
+                    projectCategories.Add(projectCategory);
+                }
+            }
+            unitOfWork.ProjectCategories.AddRange(projectCategories);
+            unitOfWork.Complete();
         }
     }
 }

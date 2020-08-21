@@ -26,6 +26,14 @@ namespace AmarisBlazorLab.Data.Repositories
             return project;
         }
 
+        public override IEnumerable<Project> GetAll()
+        {
+            return Context.Set<Project>()
+                .Include(p => p.Owner)
+                .Include(p => p.ProjectCategories).ThenInclude(pc => pc.Category)
+                .Include(p => p.UserProjects).ThenInclude(up => up.User);
+        }
+
         public IEnumerable<Project> GetCompletedProjects()
         {
             throw new NotImplementedException();
