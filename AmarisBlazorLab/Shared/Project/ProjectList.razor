@@ -20,12 +20,33 @@
 }
 else
 {
-    <ul class="list-group">
+    <ListGroup>
         @foreach (var project in Projects)
         {
-            <li class="list-group-item">@project.Name</li>
+            <ListGroupItem>
+                <Container Fluid="true">
+                    <Row>
+                        <Column ColumnSize="ColumnSize.Is10">
+                            @project.Name
+                        </Column>
+                        <Column ColumnSize="ColumnSize.Is1">
+                            <Buttons>
+                                <AuthorizeView Roles="Admin">
+                                    @*There's an issue with intellisense as Link must be an ambiguous tag*@
+                                    <Blazorise.Link To='@($"/administration/project&project_id={project.Id}")' Class="btn">
+                                        <Icon Name="IconName.Edit" />
+                                    </Blazorise.Link>
+                                </AuthorizeView>
+                                <Blazorise.Link To='@($"/project/{project.Id}")' Class="btn">
+                                    <Icon Name="IconName.Eye" />
+                                </Blazorise.Link>
+                            </Buttons>
+                        </Column>
+                    </Row>
+                </Container>
+            </ListGroupItem>
         }
-    </ul>
+    </ListGroup>
 }
 
 @code {

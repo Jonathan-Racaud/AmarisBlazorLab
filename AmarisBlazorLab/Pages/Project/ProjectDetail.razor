@@ -1,0 +1,21 @@
+﻿@page "/project/{ProjectId:int}"
+@inject ProjectService ProjectService
+@inject 
+
+<Heading Size="HeadingSize.Is1">@Project.Name</Heading>
+<Divider />
+<Paragraph>@Project.Description</Paragraph>
+
+
+
+@code {
+    [Parameter]
+    public int ProjectId { get; set; }
+    
+    Project Project;
+
+    protected override void OnInitialized()
+    {
+        Project = ProjectService.Get(ProjectId);
+    }
+}
