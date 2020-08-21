@@ -4,6 +4,7 @@ using AmarisBlazorLab.Core.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace AmarisBlazorLab.Services
@@ -87,6 +88,45 @@ namespace AmarisBlazorLab.Services
             }
             unitOfWork.ProjectCategories.AddRange(projectCategories);
             unitOfWork.Complete();
+
+            return true;
+        }
+
+        public bool AssignContributor(Project project, ApplicationUser user)
+        {
+            var userProject = new UserProject
+            {
+                Project = project,
+                User = user
+            };
+
+            try
+            {
+                unitOfWork.UserProjects.Add(userProject);
+                unitOfWork.Complete();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine($"Error: Couldn't join project: {e.Message}");
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool RemoveContributor(Project project, ApplicationUser user)
+        {
+            try
+            {
+                var userProject = unitOfWork.UserProjects.GetAll().Single(up => ((up.ProjectId == project.Id) && (up.UserId == user.Id)));
+                unitOfWork.UserProjects.Remove(userProject);
+                unitOfWork.Complete();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error: Couldn't remove contributor: {e.Message}");
+                return false;
+            }
 
             return true;
         }

@@ -1,6 +1,7 @@
 ﻿@page "/project/{ProjectId:int}"
 @attribute [Authorize]
 @inject ProjectService ProjectService
+@inject UserService UserService
 
 @if (Project != null)
 {
@@ -12,6 +13,17 @@
     }
     <Divider />
     <Paragraph>@Project.Description</Paragraph>
+    @if (User != null)
+    {
+        @if (!IsAContributor(User))
+        {
+            <Button Color="Color.Primary" Clicked="JoinProject">Join</Button>
+        }
+        else
+        {
+            <Button Color="Color.Danger" Clicked="LeaveProject">Leave</Button>
+        }
+    }
     <ProjectContributorsList Project="Project" />
 }
 else
@@ -22,15 +34,43 @@ else
     </Alert>
 }
 
-
 @code {
     [Parameter]
     public int ProjectId { get; set; }
 
-    Project Project;
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
 
-    protected override void OnInitialized()
+    Project Project;
+    ApplicationUser User;
+
+    protected override async void OnInitialized()
     {
+        var authState = await authenticationStateTask;
+
+        User = UserService.GetFromIdentityName(authState.User.Identity.Name);
         Project = ProjectService.Get(ProjectId);
+    }
+
+    bool IsAContributor(ApplicationUser User)
+    {
+        if (User.Id == Project.Owner.Id)
+        {
+            return true;
+        }
+
+        return Project.UserProjects.Any(up => up.UserId == User.Id);
+    }
+
+    void JoinProject()
+    {
+        ProjectService.AssignContributor(Project, User);
+        StateHasChanged();
+    }
+
+    void LeaveProject()
+    {
+        ProjectService.RemoveContributor(Project, User);
+        StateHasChanged();
     }
 }

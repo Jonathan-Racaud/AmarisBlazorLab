@@ -20,6 +20,11 @@ namespace AmarisBlazorLab.Data.Repositories
             this.userManager = userManager;
         }
 
+        public ApplicationUser GetFromIdentityName(string name)
+        {
+            return Context.Set<ApplicationUser>().SingleOrDefault(u => u.Email == name);
+        }
+
         public ApplicationUser GetWithProjects(string id)
         {
             return Context.Set<ApplicationUser>()
