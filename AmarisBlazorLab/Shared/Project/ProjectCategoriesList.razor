@@ -1,0 +1,13 @@
+﻿
+@if (Project != null)
+{
+    @foreach (var category in Project.ProjectCategories)
+    {
+        <Badge Color="Color.Dark">@category.Category.Name</Badge>
+    }
+}
+
+@code {
+    [Parameter]
+    public Project Project { get; set; }
+}
