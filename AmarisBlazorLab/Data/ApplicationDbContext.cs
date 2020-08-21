@@ -16,6 +16,7 @@ namespace AmarisBlazorLab.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<ProjectCategory> ProjectCategories { get; set; }
         public DbSet<Material> Materials { get; set; }
+        public DbSet<MaterialType> MaterialTypes { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
