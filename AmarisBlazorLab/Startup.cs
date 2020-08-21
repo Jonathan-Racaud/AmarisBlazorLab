@@ -52,6 +52,7 @@ namespace AmarisBlazorLab
             services.AddScoped<UserService>();
             services.AddScoped<ProjectService>();
             services.AddScoped<RoleService>();
+            services.AddScoped<CategoryService>();
 
             services.AddBlazorise(options =>
             {

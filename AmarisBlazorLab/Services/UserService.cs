@@ -19,14 +19,22 @@ namespace AmarisBlazorLab.Services
             this.unitOfWork = unitOfWork;
         }
 
-        public User Get(string id)
+        public ApplicationUser Get(string id)
         {
-            var user = unitOfWork.Users.Get(id) as User;
-
-            return user;
+            return unitOfWork.Users.Get(id);
         }
 
-        public List<User> GetAll()
+        public User GetWithRole(string id)
+        {
+            return unitOfWork.Users.GetWithRoles(id);
+        }
+
+        public List<ApplicationUser> GetAll()
+        {
+            return unitOfWork.Users.GetAll().ToList();
+        }
+
+        public List<User> GetAllWithRoles()
         {
             var applicationUsers = unitOfWork.Users.GetAll();
 

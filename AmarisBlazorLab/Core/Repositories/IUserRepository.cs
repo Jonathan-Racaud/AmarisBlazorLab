@@ -10,7 +10,6 @@ namespace AmarisBlazorLab.Core.Repositories
     public interface IUserRepository : IRepository<ApplicationUser>
     {
         User GetWithRoles(string id);
-
         Task<bool> AssignRoles(ApplicationUser user, List<string> roles);
     }
 }

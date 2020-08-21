@@ -1,48 +1,54 @@
 ﻿@inject ProjectService ProjectService
 @inject UserService UserService
+@inject CategoryService CategoryService 
 
-    <Form>
-        <Field>
-            <FieldLabel>Name</FieldLabel>
-            <TextEdit Role="TextRole.Text" Placeholder="Enter project's name" @bind-Text="Project.Name" />
-        </Field>
-        <Field>
-            <FieldLabel>Description</FieldLabel>
-            <MemoEdit @bind-Text="Project.Description"></MemoEdit>
-        </Field>
-        <Field>
-            <FieldLabel>Assign project's owner</FieldLabel>
-            <Select TValue="ApplicationUser" @bind-SelectedValue="Project.Owner">
-                @foreach (var user in Users)
-                {
-                    <SelectItem TValue="ApplicationUser" Value="user">@user.Email</SelectItem>
-                }
-            </Select>
-        </Field>
-        <Field>
-            <FieldLabel>Assign contributors</FieldLabel>
-            <Select TValue="ApplicationUser" SelectedValues="@Project.Contributors" SelectedValuesChanged="@OnSelectedContributorsChanged">
-                @foreach (var user in Users)
-                {
-                    <SelectItem TValue="ApplicationUser" Value="user">@user.Email</SelectItem>
-                }
-            </Select>
-        </Field>
-        <Field>
-            <FieldLabel>Assign categories</FieldLabel>
-            <Select TValue="Category" SelectedValues="@Project.Categories" SelectedValuesChanged="@OnSelectedCategoriesChanged">
-                @foreach (var category in Categories)
-                {
-                    <SelectItem TValue="Category" Value="category">@category.Name</SelectItem>
-                }
-            </Select>
-        </Field>
-        <Button Color="Color.Primary" @onclick="FormSubmitted">Submit</Button>
-    </Form>
+<Form>
+    <Field>
+        <FieldLabel>Name</FieldLabel>
+        <TextEdit Role="TextRole.Text" Placeholder="Enter project's name" @bind-Text="Project.Name" />
+    </Field>
+    <Field>
+        <FieldLabel>Description</FieldLabel>
+        <MemoEdit @bind-Text="Project.Description"></MemoEdit>
+    </Field>
+    <Field>
+        <FieldLabel>Assign project's owner</FieldLabel>
+        <Select TValue="string" SelectedValue="OwnerId" SelectedValueChanged="OnSelectedOwnerChanged">
+            @foreach (var user in Users)
+            {
+                <SelectItem TValue="string" Value="user.Id">@user.Email</SelectItem>
+            }
+        </Select>
+    </Field>
+    <Field>
+        <FieldLabel>Assign contributors</FieldLabel>
+        <Select Multiple="true" TValue="string" SelectedValues="Contributors" SelectedValuesChanged="OnSelectedContributorsChanged">
+            @foreach (var user in Users)
+            {
+                <SelectItem TValue="string" Value="user.Id">@user.Email</SelectItem>
+            }
+        </Select>
+    </Field>
+    <Field>
+        <FieldLabel>Assign categories</FieldLabel>
+        <Select Multiple="true" TValue="int" SelectedValues="CategoriesId" SelectedValuesChanged="OnSelectedCategoriesChanged">
+            @foreach (var category in Categories)
+            {
+                <SelectItem TValue="int" Value="category.Id">@category.Name</SelectItem>
+            }
+        </Select>
+    </Field>
+    <Button Color="Color.Primary" @onclick="FormSubmitted">Submit</Button>
+</Form>
 
 @code {
     ProjectRegistration Project;
-    List<User> Users = new List<User>();
+    List<ApplicationUser> Users = new List<ApplicationUser>();
+    List<Category> Categories = new List<Category>();
+
+    string OwnerId;
+    List<string> Contributors = new List<string>();
+    List<int> CategoriesId = new List<int>();
 
     [Parameter]
     public EventCallback<ProjectRegistration> OnFormSubmitted { get; set; }
@@ -50,22 +56,37 @@
     protected override void OnInitialized()
     {
         Users = UserService.GetAll();
-        Clear();
+        Categories = CategoryService.GetAll();
+        Init();
     }
 
     private async void FormSubmitted()
     {
         await OnFormSubmitted.InvokeAsync(Project);
-        Clear();
+        Init();
     }
 
-    public void Clear()
+    public void Init()
     {
         Project = new ProjectRegistration();
+        Project.Owner = Users[0];
     }
 
-    void OnSelectedContributorsChanged(IReadOnlyList<ApplicationUser> users)
+    // For some reason I cannot make the Select binding work with the ApplicationUser or Category or any other user defined types directly
+    // so we have to rely on getting the right data from the selected Ids instead.
+    void OnSelectedOwnerChanged(string ownerId)
     {
-        Console.WriteLine(users);
+        OwnerId = ownerId;
+        Project.Owner = Users.Where(u => u.Id == OwnerId).Single();
+    }
+
+    void OnSelectedContributorsChanged(IReadOnlyList<string> users)
+    {
+        Project.Contributors = Users.Join(users, user => user.Id, id => id, (user, id) => user).ToList();
+    }
+
+    void OnSelectedCategoriesChanged(IReadOnlyList<int> categories)
+    {
+        Project.Categories = Categories.Join(categories, cat => cat.Id, id => id, (cat, id) => cat).ToList();
     }
 }
