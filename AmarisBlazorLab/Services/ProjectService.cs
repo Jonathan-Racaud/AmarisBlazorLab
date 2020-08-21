@@ -71,8 +71,8 @@ namespace AmarisBlazorLab.Services
                     };
                     userProjects.Add(userProject);
                 }
-                unitOfWork.UserProjects.AddRange(userProjects);
             }
+            unitOfWork.UserProjects.AddRange(userProjects);
             unitOfWork.Complete();
 
             var projectCategories = new List<ProjectCategory>();
