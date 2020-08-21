@@ -47,6 +47,15 @@ namespace AmarisBlazorLab.Data.Migrations
                 name: "IX_ProjectCategories_CategoryId",
                 table: "ProjectCategories",
                 column: "CategoryId");
+
+            migrationBuilder.Sql("INSERT INTO Categories (Name) VALUES ('Web')");
+            migrationBuilder.Sql("INSERT INTO Categories (Name) VALUES ('Mobile')");
+            migrationBuilder.Sql("INSERT INTO Categories (Name) VALUES ('Desktop')");
+            migrationBuilder.Sql("INSERT INTO Categories (Name) VALUES ('Graphics')");
+            migrationBuilder.Sql("INSERT INTO Categories (Name) VALUES ('UI')");
+            migrationBuilder.Sql("INSERT INTO Categories (Name) VALUES ('Embedded')");
+            migrationBuilder.Sql("INSERT INTO Categories (Name) VALUES ('Market Study')");
+            migrationBuilder.Sql("INSERT INTO Categories (Name) VALUES ('Techno Study')");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
