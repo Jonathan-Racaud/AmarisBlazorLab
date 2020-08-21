@@ -1,4 +1,4 @@
-﻿@inject ProjectService Service
+﻿@inject ProjectService ProjectService
 
 <Heading Size="HeadingSize.Is3">All projects</Heading>
 
@@ -56,6 +56,6 @@ else
     {
         base.OnInitialized();
 
-        Projects = Service.GetAll();
+        Projects = ProjectService.GetAll();
     }
 }

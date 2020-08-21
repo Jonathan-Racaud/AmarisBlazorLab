@@ -1,0 +1,25 @@
+﻿@if (User != null)
+{
+    <CardDeck>
+        @foreach (var project in User.UserProjects)
+        {
+            <Card>
+                <CardBody>
+                    <CardTitle Size="5">@project.Project.Name</CardTitle>
+                    <CardSubtitle>Owner: @project.Project.Owner.Email</CardSubtitle>
+                    <CardText>Description: @project.Project.Description</CardText>
+                </CardBody>
+                <CardFooter>
+                    <CardActions>
+                        <Button Color="Color.Primary">View details</Button>
+                    </CardActions>
+                </CardFooter>
+            </Card>
+        }
+    </CardDeck>
+}
+
+@code {
+    [Parameter]
+    public ApplicationUser User { get; set; }
+}

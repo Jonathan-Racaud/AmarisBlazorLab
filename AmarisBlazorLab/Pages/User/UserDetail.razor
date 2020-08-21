@@ -1,0 +1,30 @@
+﻿@page "/user/{UserId}"
+@attribute [Authorize]
+@inject UserService UserService
+
+@if (User != null)
+{
+    <Heading Size="HeadingSize.Is1">@User.Email</Heading>
+    <Divider />
+    <UserProjectsList User="User"/>
+}
+else
+{
+    <Alert Visible="true">
+        <AlertMessage>User not found.</AlertMessage>
+        <AlertDescription>The User with id: @UserId couldn't be found.</AlertDescription>
+    </Alert>
+}
+
+
+@code {
+    [Parameter]
+    public string UserId { get; set; }
+
+    ApplicationUser User;
+
+    protected override void OnInitialized()
+    {
+        User = UserService.GetWithProjects(UserId);
+    }
+}

@@ -24,6 +24,11 @@ namespace AmarisBlazorLab.Services
             return unitOfWork.Users.Get(id);
         }
 
+        public ApplicationUser GetWithProjects(string id)
+        {
+            return unitOfWork.Users.GetWithProjects(id);
+        }
+
         public User GetWithRole(string id)
         {
             return unitOfWork.Users.GetWithRoles(id);

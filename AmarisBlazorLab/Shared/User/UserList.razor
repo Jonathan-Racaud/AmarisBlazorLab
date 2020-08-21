@@ -27,15 +27,15 @@ else
                         </Column>
                         <Column ColumnSize="ColumnSize.Is1">
                             <Buttons>
+                                <Blazorise.Link To='@($"/user/{user.Id}")' Class="btn">
+                                    <Icon Name="IconName.Eye" />
+                                </Blazorise.Link>
                                 <AuthorizeView Roles="Admin">
                                     @*There's an issue with intellisense as Link must be an ambiguous tag*@
                                     <Blazorise.Link To='@($"/administration/user&user_id={user.Id}")' Class="btn">
                                         <Icon Name="IconName.Edit" />
                                     </Blazorise.Link>
                                 </AuthorizeView>
-                                <Blazorise.Link To="/user" Class="btn">
-                                    <Icon Name="IconName.Eye" />
-                                </Blazorise.Link>
                             </Buttons>  
                         </Column>
                     </Row>

@@ -2,6 +2,7 @@
 using AmarisBlazorLab.Core.DTO;
 using AmarisBlazorLab.Core.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,13 @@ namespace AmarisBlazorLab.Data.Repositories
             : base(context)
         {
             this.userManager = userManager;
+        }
+
+        public ApplicationUser GetWithProjects(string id)
+        {
+            return Context.Set<ApplicationUser>()
+                .Include(u => u.UserProjects).ThenInclude(up => up.Project).ThenInclude(p => p.Owner)
+                .Single(u => u.Id == id);
         }
 
         public User GetWithRoles(string id)
