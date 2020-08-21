@@ -18,7 +18,9 @@ namespace AmarisBlazorLab.Data.Repositories
         public override Project Get(int id)
         {
             var project = Context.Set<Project>()
+                .Include(p => p.Owner)
                 .Include(p => p.ProjectCategories).ThenInclude(pc => pc.Category)
+                .Include(p => p.UserProjects).ThenInclude(up => up.User)
                 .Single(p => p.Id == id);
 
             return project;

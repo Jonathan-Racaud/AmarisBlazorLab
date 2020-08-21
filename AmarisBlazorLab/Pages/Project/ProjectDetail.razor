@@ -5,12 +5,14 @@
 @if (Project != null)
 {
     <Heading Size="HeadingSize.Is1">@Project.Name</Heading>
+    <Heading Size="HeadingSize.Is3">Owner: @Project.Owner.Email</Heading>
     @if (Project.ProjectCategories != null)
     {
         <ProjectCategoriesList Project="Project" />
     }
     <Divider />
     <Paragraph>@Project.Description</Paragraph>
+    <ProjectContributorsList Project="Project" />
 }
 else
 {

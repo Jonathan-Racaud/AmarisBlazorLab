@@ -1,0 +1,36 @@
+﻿@if (Project != null)
+{
+    <Heading Size="HeadingSize.Is5">Contributors</Heading>
+    <ListGroup>
+        @foreach (var project in Project.UserProjects)
+        {
+        <ListGroupItem>
+            <Container Fluid="true">
+                <Row>
+                    <Column ColumnSize="ColumnSize.Is10">
+                        @project.User.Email
+                    </Column>
+                    <Column ColumnSize="ColumnSize.Is1">
+                        <Buttons>
+                            <Blazorise.Link To='@($"/user/{project.UserId}")' Class="btn">
+                                <Icon Name="IconName.Eye" />
+                            </Blazorise.Link>
+                            <AuthorizeView Roles="Admin">
+                                @*There's an issue with intellisense as Link must be an ambiguous tag*@
+                                <Blazorise.Link To='@($"/administration/user&user_id={project.UserId}")' Class="btn">
+                                    <Icon Name="IconName.Edit" />
+                                </Blazorise.Link>
+                            </AuthorizeView>
+                        </Buttons>
+                    </Column>
+                </Row>
+            </Container>
+        </ListGroupItem>
+        }
+    </ListGroup>
+}
+
+@code {
+    [Parameter]
+    public Project Project { get; set; }
+}

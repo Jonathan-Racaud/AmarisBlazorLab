@@ -53,9 +53,15 @@ namespace AmarisBlazorLab.Services
             unitOfWork.Projects.Add(project);
             unitOfWork.Complete();
 
+            var userProjects = new List<UserProject>();
+            userProjects.Add(new UserProject
+            {
+                Project = project,
+                User = project.Owner
+            });
+
             if (projectIn.Contributors.Count > 0)
             {
-                var userProjects = new List<UserProject>();
                 foreach (var user in projectIn.Contributors)
                 {
                     var userProject = new UserProject
@@ -66,8 +72,8 @@ namespace AmarisBlazorLab.Services
                     userProjects.Add(userProject);
                 }
                 unitOfWork.UserProjects.AddRange(userProjects);
-                unitOfWork.Complete();
             }
+            unitOfWork.Complete();
 
             var projectCategories = new List<ProjectCategory>();
             foreach (var category in projectIn.Categories)
