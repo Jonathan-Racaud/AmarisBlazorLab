@@ -68,7 +68,7 @@ namespace AmarisBlazorLab.Services
             }
             else
             {
-                source = materialIn.Name;
+                source = materialIn.MaterialRealName;
             }
 
             var material = new Material
