@@ -13,5 +13,10 @@ namespace AmarisBlazorLab.Data.Repositories
             : base(context)
         {
         }
+
+        public IEnumerable<UserProject> GetAllFromProject(int id)
+        {
+            return Context.Set<UserProject>().Where(pc => pc.ProjectId == id).ToList();
+        }
     }
 }

@@ -8,5 +8,6 @@ namespace AmarisBlazorLab.Core.Repositories
 {
     public interface IProjectCategoryRepository : IRepository<ProjectCategory>
     {
+        IEnumerable<ProjectCategory> GetAllFromProject(int id);
     }
 }

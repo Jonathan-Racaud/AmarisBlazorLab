@@ -13,8 +13,8 @@
     </Field>
     <Field>
         <FieldLabel>Assign project's owner</FieldLabel>
-        <Select TValue="string" SelectedValue="OwnerId" SelectedValueChanged="OnSelectedOwnerChanged">
-            @foreach (var user in Users)
+        <Select TValue="string" SelectedValue="_ownerId" SelectedValueChanged="OnSelectedOwnerChanged">
+            @foreach (var user in _users)
             {
                 @if (IsOwner(user))
                 {
@@ -29,8 +29,8 @@
     </Field>
     <Field>
         <FieldLabel>Assign contributors</FieldLabel>
-        <Select @ref="ContributorSelect" Multiple="true" TValue="string" SelectedValues="Contributors" SelectedValuesChanged="OnSelectedContributorsChanged">
-            @foreach (var user in Users)
+        <Select Multiple="true" TValue="string" SelectedValues="_contributorsIds" SelectedValuesChanged="OnSelectedContributorsChanged">
+            @foreach (var user in _users)
             {
                 @if (IsAContributor(user))
                 {
@@ -45,8 +45,8 @@
     </Field>
     <Field>
         <FieldLabel>Assign categories</FieldLabel>
-        <Select Multiple="true" TValue="int" SelectedValues="CategoriesId" SelectedValuesChanged="OnSelectedCategoriesChanged">
-            @foreach (var category in Categories)
+        <Select Multiple="true" TValue="int" SelectedValues="_categoriesIds" SelectedValuesChanged="OnSelectedCategoriesChanged">
+            @foreach (var category in _categories)
             {
                 @if (IsInCategory(category))
                 {
@@ -69,14 +69,17 @@
     [Parameter]
     public ProjectRegistration Project { get; set; }
 
-    List<ApplicationUser> Users = new List<ApplicationUser>();
-    List<Category> Categories = new List<Category>();
+    List<ApplicationUser> _users = new List<ApplicationUser>();
+    List<Category> _categories = new List<Category>();
 
-    string OwnerId;
-    List<string> Contributors = new List<string>();
-    List<int> CategoriesId = new List<int>();
+    // Used in the Select component
+    string _ownerId;
+    List<string> _contributorsIds = new List<string>();
+    List<int> _categoriesIds = new List<int>();
 
-    Select<string> ContributorSelect;
+    ApplicationUser _ownerSelected;
+    List<ApplicationUser> _contributorsSelected = new List<ApplicationUser>();
+    List<Category> _categoriesSelected = new List<Category>();
 
     protected override void OnInitialized()
     {
@@ -85,6 +88,12 @@
 
     private async void FormSubmitted()
     {
+        if ((_ownerSelected != null ) && (_ownerSelected != Project.Owner))
+        {
+            Project.Owner = _ownerSelected;
+        }
+        Project.Contributors = _contributorsSelected;
+        Project.Categories = _categoriesSelected;
         await OnFormSubmitted.InvokeAsync(Project);
         Init(true);
     }
@@ -94,15 +103,13 @@
     // Solution might be to have two different form depending on the action we want to perform
     public void Init(bool force = false)
     {
-        Console.WriteLine("Enters init");
-        Users = UserService.GetAll();
-        Categories = CategoryService.GetAll();
+        _users = UserService.GetAll();
+        _categories = CategoryService.GetAll();
 
         if (Project == null || force)
         {
-            Console.WriteLine("Project is null");
             Project = new ProjectRegistration();
-            Project.Owner = Users[0];
+            Project.Owner = _users[0];
         }
         StateHasChanged();
     }
@@ -111,18 +118,18 @@
     // so we have to rely on getting the right data from the selected Ids instead.
     void OnSelectedOwnerChanged(string ownerId)
     {
-        OwnerId = ownerId;
-        Project.Owner = Users.Where(u => u.Id == OwnerId).Single();
+        _ownerId = ownerId;
+        _ownerSelected = _users.Where(u => u.Id == _ownerId).Single();
     }
 
     void OnSelectedContributorsChanged(IReadOnlyList<string> users)
     {
-        Project.Contributors = Users.Join(users, user => user.Id, id => id, (user, id) => user).ToList();
+        _contributorsSelected = _users.Join(users, user => user.Id, id => id, (user, id) => user).ToList();
     }
 
     void OnSelectedCategoriesChanged(IReadOnlyList<int> categories)
     {
-        Project.Categories = Categories.Join(categories, cat => cat.Id, id => id, (cat, id) => cat).ToList();
+        _categoriesSelected = _categories.Join(categories, cat => cat.Id, id => id, (cat, id) => cat).ToList();
     }
 
     bool IsAContributor(ApplicationUser user)

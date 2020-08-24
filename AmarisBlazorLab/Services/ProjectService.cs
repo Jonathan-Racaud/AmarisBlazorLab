@@ -67,6 +67,7 @@ namespace AmarisBlazorLab.Services
                 (projectIn.Owner == null) ||
                 (projectIn.Categories.Count < 1))
             {
+                Console.Error.WriteLine("Wrong parameters for updating a project");
                 return false;
             }
 
@@ -124,35 +125,31 @@ namespace AmarisBlazorLab.Services
 
         private void UpdateProjectContributors(Project project, ProjectRegistration projectIn)
         {
+            var existingContributors = unitOfWork.UserProjects.GetAllFromProject(project.Id);
+            unitOfWork.UserProjects.RemoveRange(existingContributors);
+
             var userProjects = new List<UserProject>();
-            if (!project.UserProjects.Any(up => up.UserId == projectIn.Owner.Id))
+            userProjects.Add(new UserProject
             {
-                userProjects.Add(new UserProject
-                {
-                    Project = project,
-                    User = project.Owner
-                });
-            }
+                Project = project,
+                User = project.Owner
+            });
 
             if (projectIn.Contributors.Count > 0)
             {
                 foreach (var user in projectIn.Contributors)
                 {
-                    if (!project.UserProjects.Any(up => up.UserId == user.Id))
+                    var userProject = new UserProject
                     {
-                        var userProject = new UserProject
-                        {
-                            Project = project,
-                            User = user
-                        };
-                        userProjects.Add(userProject);
-                    }
+                        Project = project,
+                        User = user
+                    };
+                    userProjects.Add(userProject);
                 }
             }
 
             if (userProjects.Count > 0)
             {
-                var existingContributors = unitOfWork.UserProjects.GetAll().Where(up => up.ProjectId == project.Id);
                 unitOfWork.UserProjects.AddRange(userProjects);
             }
             unitOfWork.Complete();
@@ -160,19 +157,20 @@ namespace AmarisBlazorLab.Services
 
         private void UpdateProjectCategories(Project project, ProjectRegistration projectIn)
         {
+            var existingCategories = unitOfWork.ProjectCategories.GetAllFromProject(project.Id);
+            unitOfWork.ProjectCategories.RemoveRange(existingCategories);
+
             var projectCategories = new List<ProjectCategory>();
             foreach (var category in projectIn.Categories)
             {
-                if (!project.ProjectCategories.Any(pc => pc.CategoryId == category.Id))
+                var projectCategory = new ProjectCategory
                 {
-                    var projectCategory = new ProjectCategory
-                    {
-                        Project = project,
-                        Category = category
-                    };
-                    projectCategories.Add(projectCategory);
-                }
+                    Project = project,
+                    Category = category
+                };
+                projectCategories.Add(projectCategory);
             }
+            
             unitOfWork.ProjectCategories.AddRange(projectCategories);
             unitOfWork.Complete();
         }

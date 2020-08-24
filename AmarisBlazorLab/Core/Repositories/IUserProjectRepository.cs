@@ -8,5 +8,6 @@ namespace AmarisBlazorLab.Core.Repositories
 {
     public interface IUserProjectRepository : IRepository<UserProject>
     {
+        IEnumerable<UserProject> GetAllFromProject(int id);
     }
 }
