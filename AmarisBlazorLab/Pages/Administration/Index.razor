@@ -8,22 +8,23 @@
 
 <Container>
     <Row>
-        <Column ColumnSize="ColumnSize.Is12">
+        <Column ColumnSize="ColumnSize.IsFull">
             <UserList @ref="UserList"/>
         </Column>
     </Row>
     <Row Margin="Margin.Is2.FromTop">
-        <Column ColumnSize="ColumnSize.Is2">
+        <Column ColumnSize="ColumnSize.Is4">
             <Button Color="Color.Primary" @onclick="@(() => UserFormModal.Show())">Create user</Button>
         </Column>
     </Row>
+    <Divider />
     <Row>
-        <Column ColumnSize="ColumnSize.Is12">
+        <Column ColumnSize="ColumnSize.IsFull">
             <ProjectList @ref="ProjectList"/>
         </Column>
     </Row>
     <Row Margin="Margin.Is2.FromTop">
-        <Column ColumnSize="ColumnSize.Is2">
+        <Column ColumnSize="ColumnSize.Is4">
             <Button Color="Color.Primary" @onclick="@(() => ProjectFormModal.Show())">Create project</Button>
         </Column>
     </Row>

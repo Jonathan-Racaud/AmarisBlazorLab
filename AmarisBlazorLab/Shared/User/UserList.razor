@@ -15,17 +15,17 @@ else
         {
             <ListGroupItem>
                 <Container Fluid="true">
-                    <Row>
-                        <Column ColumnSize="ColumnSize.Is1">
+                    <Row Class="justify-content-between">
+                        <Column ColumnSize="ColumnSize.Is2" Class="align-self-center">
                             @if (user.Roles.Contains("Admin"))
                             {
                                 <Badge Color="Color.Info">Admin</Badge>
                             }
                         </Column>
-                        <Column ColumnSize="ColumnSize.Is10">
+                        <Column ColumnSize="ColumnSize.Is8" Class="d-flex justify-content-start align-self-center">
                             @user.Email
                         </Column>
-                        <Column ColumnSize="ColumnSize.Is1">
+                        <Column ColumnSize="ColumnSize.Is2" Class="d-flex justify-content-end align-self-center">
                             <Buttons>
                                 <Blazorise.Link To='@($"/user/{user.Id}")' Class="btn">
                                     <Icon Name="IconName.Eye" />
