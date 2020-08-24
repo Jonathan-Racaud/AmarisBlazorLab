@@ -1,43 +1,56 @@
 ﻿@inject MaterialService MaterialService
 
 <Row>
-    <Heading Size="HeadingSize.Is5">Materials:</Heading>
+    <Column ColumnSize="ColumnSize.IsFull">
+        <Heading Size="HeadingSize.Is5">Materials:</Heading>
+    </Column>
 </Row>
 <Row>
-    <Button Color="Color.Secondary" Clicked="ShowUploadForm">Upload material</Button>
+    <Column ColumnSize="ColumnSize.IsQuarter">
+        <Button Color="Color.Secondary" Clicked="ShowUploadForm">Upload material</Button>
+    </Column>
 </Row>
 @if (Materials.Count == 0)
 {
-<Row>
-    <Alert Visible="true" Color="Color.Info">
-        <AlertMessage>There are no material for this project.</AlertMessage>
-    </Alert>
-</Row>
+    <Row Margin="Margin.Is2.FromTop">
+        <Column ColumnSize="ColumnSize.IsFull">
+            <Alert Visible="true" Color="Color.Info">
+                <AlertMessage>There are no material for this project.</AlertMessage>
+            </Alert>
+        </Column>
+    </Row>
 }
-<ListGroup>
-    @foreach (var material in Materials)
-    {
-    <ListGroupItem>
-        @if (material.MaterialType.Name == "Image")
-        {
-            <Icon Name="IconName.Image" />
-        }
-        else if (material.MaterialType.Name == "Video")
-        {
-            <Icon Name="IconName.Video" />
-        }
-        else if (material.MaterialType.Name == "Document")
-        {
-            <Icon Name="IconName.FileAlt" />
-        }
-        else if (material.MaterialType.Name == "Url")
-        {
-            <Icon Name="IconName.Link" />
-        }
-        <Blazorise.Link To="@material.Source">@material.Name</Blazorise.Link>
-    </ListGroupItem>
-    }
-</ListGroup>
+else
+{
+    <Row Margin="Margin.Is2.FromTop">
+        <Column ColumnSize="ColumnSize.IsFull">
+            <ListGroup>
+                @foreach (var material in Materials)
+                {
+                    <ListGroupItem>
+                        @if (material.MaterialType.Name == "Image")
+                        {
+                            <Icon Name="IconName.Image" />
+                        }
+                        else if (material.MaterialType.Name == "Video")
+                        {
+                            <Icon Name="IconName.Video" />
+                        }
+                        else if (material.MaterialType.Name == "Document")
+                        {
+                            <Icon Name="IconName.FileAlt" />
+                        }
+                        else if (material.MaterialType.Name == "Url")
+                        {
+                            <Icon Name="IconName.Link" />
+                        }
+                        <Blazorise.Link To="@material.Source">@material.Name</Blazorise.Link>
+                    </ListGroupItem>
+                }
+            </ListGroup>
+        </Column>
+    </Row>
+}
 
 <Modal @ref="UploadModal">
     <ModalBackdrop />

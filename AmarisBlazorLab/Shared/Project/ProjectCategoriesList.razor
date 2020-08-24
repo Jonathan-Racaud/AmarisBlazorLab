@@ -1,10 +1,13 @@
-﻿
-@if (Project != null)
+﻿@if (Project != null)
 {
-    @foreach (var category in Project.ProjectCategories)
-    {
-        <Badge Color="Color.Dark">@category.Category.Name</Badge>
-    }
+    <Row>
+        @foreach (var category in Project.ProjectCategories)
+        {
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Badge Color="Color.Dark">@category.Category.Name</Badge>
+            </Column>
+        }
+    </Row>
 }
 
 @code {
