@@ -5,6 +5,15 @@
             <FieldLabel>Name</FieldLabel>
             <TextEdit @bind-Text="Material.Name" />
         </Field>
+        <Field>
+            <FieldLabel>Type</FieldLabel>
+            <Select TValue="int" @bind-SelectedValue="TypeId">
+                @foreach (var type in Types)
+                {
+                    <SelectItem TValue="int" Value="type.Id">@type.Name</SelectItem>
+                }
+            </Select>
+        </Field>
         @if (TypeId == UrlTypeId)
         {
             <Field>
@@ -19,15 +28,6 @@
                 <FileEdit Changed="OnChanged">@Material.MaterialRealName</FileEdit>
             </Field>
         }
-        <Field>
-            <FieldLabel>Type</FieldLabel>
-            <Select TValue="int" @bind-SelectedValue="TypeId">
-                @foreach (var type in Types)
-                {
-                    <SelectItem TValue="int" Value="type.Id">@type.Name</SelectItem>
-                }
-            </Select>
-        </Field>
         <Button Color="Color.Primary" @onclick="FormSubmitted">Submit</Button>
     </Form>
 
@@ -42,7 +42,6 @@
     int TypeId;
     int UrlTypeId;
     List<MaterialType> Types;
-    double ProgressValue;
 
     protected override void OnInitialized()
     {

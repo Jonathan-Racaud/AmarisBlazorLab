@@ -96,5 +96,7 @@
             UploadAlertSuccess.Hide();
             UploadAlertFailure.Show();
         }
+        Materials = MaterialService.GetAllFromProject(Project);
+        StateHasChanged();
     }
 }
