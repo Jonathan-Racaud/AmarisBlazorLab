@@ -20,6 +20,7 @@ namespace AmarisBlazorLab.Data
 
         public ICategoryRepository Categories { get; private set; }
 
+        public IMaterialRepository Materials { get; private set; }
         public IMaterialTypeRepository MaterialTypes { get; private set; }
 
         public IIdentityRoleRepository Roles { get; private set; }
@@ -32,6 +33,7 @@ namespace AmarisBlazorLab.Data
             Projects = new ProjectRepository(_context);
             Users = new UserRepository(_context, userManager);
             Categories = new CategoryRepository(_context);
+            Materials = new MaterialRepository(_context);
             MaterialTypes = new MaterialTypeRepository(_context);
             Roles = new RoleRepository(_context);
             UserProjects = new UserProjectRepository(_context);

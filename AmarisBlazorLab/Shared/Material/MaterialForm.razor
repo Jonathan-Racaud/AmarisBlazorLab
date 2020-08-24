@@ -1,0 +1,72 @@
+﻿@inject MaterialService MaterialService
+
+    <Form>
+        <Field>
+            <FieldLabel>Name</FieldLabel>
+            <TextEdit @bind-Text="Material.Name" />
+        </Field>
+        @if (TypeId == UrlTypeId)
+        {
+            <Field>
+                <FieldLabel>Url</FieldLabel>
+                <TextEdit @bind-Text="Material.MaterialRealName" />
+            </Field>
+        }
+        else
+        {
+            <Field>
+                <FieldLabel>File</FieldLabel>
+                <FileEdit Changed="OnChanged">@Material.MaterialRealName</FileEdit>
+            </Field>
+        }
+        <Field>
+            <FieldLabel>Type</FieldLabel>
+            <Select TValue="int" @bind-SelectedValue="TypeId">
+                @foreach (var type in Types)
+                {
+                    <SelectItem TValue="int" Value="type.Id">@type.Name</SelectItem>
+                }
+            </Select>
+        </Field>
+        <Button Color="Color.Primary" @onclick="FormSubmitted">Submit</Button>
+    </Form>
+
+@code {
+    [Parameter]
+    public Project Project { get; set; }
+
+    [Parameter]
+    public EventCallback<MaterialUpload> OnFormSubmitted { get; set; }
+
+    MaterialUpload Material;
+    int TypeId;
+    int UrlTypeId;
+    List<MaterialType> Types;
+    double ProgressValue;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        Material = new MaterialUpload();
+        Types = MaterialService.GetAllTypes();
+        UrlTypeId = Types.Single(t => t.Name == "Url").Id;
+    }
+
+    void OnChanged(FileChangedEventArgs e)
+    {
+        var file = e.Files[0];
+
+        Material.MaterialRealName = file.Name;
+        Material.File = file;
+        StateHasChanged();
+    }
+
+    async void FormSubmitted()
+    {
+        Material.Type = Types.Single(t => t.Id == TypeId);
+        Material.Project = Project;
+        await OnFormSubmitted.InvokeAsync(Material);
+        Material = new MaterialUpload();
+    }
+}

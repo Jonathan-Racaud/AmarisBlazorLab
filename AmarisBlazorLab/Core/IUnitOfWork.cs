@@ -11,6 +11,7 @@ namespace AmarisBlazorLab.Core
         IProjectRepository Projects { get; }
         IUserRepository Users { get; }
         ICategoryRepository Categories { get; }
+        IMaterialRepository Materials { get; }
         IMaterialTypeRepository MaterialTypes { get; }
         IIdentityRoleRepository Roles { get; }
         IUserProjectRepository UserProjects { get; }

@@ -1,0 +1,100 @@
+﻿@inject MaterialService MaterialService
+
+<Row>
+    <Heading Size="HeadingSize.Is5">Materials:</Heading>
+</Row>
+<Row>
+    <Button Color="Color.Secondary" Clicked="ShowUploadForm">Upload material</Button>
+</Row>
+@if (Materials.Count == 0)
+{
+<Row>
+    <Alert Visible="true" Color="Color.Info">
+        <AlertMessage>There are no material for this project.</AlertMessage>
+    </Alert>
+</Row>
+}
+<ListGroup>
+    @foreach (var material in Materials)
+    {
+    <ListGroupItem>
+        @if (material.MaterialType.Name == "Image")
+        {
+            <Icon Name="IconName.Image" />
+        }
+        else if (material.MaterialType.Name == "Video")
+        {
+            <Icon Name="IconName.Video" />
+        }
+        else if (material.MaterialType.Name == "Document")
+        {
+            <Icon Name="IconName.FileAlt" />
+        }
+        else if (material.MaterialType.Name == "Url")
+        {
+            <Icon Name="IconName.Link" />
+        }
+        <Blazorise.Link To="@material.Source">@material.Name</Blazorise.Link>
+    </ListGroupItem>
+    }
+</ListGroup>
+
+<Modal @ref="UploadModal">
+    <ModalBackdrop />
+    <ModalContent Centered="true">
+        <ModalHeader>
+            <ModalTitle>Upload material</ModalTitle>
+            <CloseButton Clicked="@(() => UploadModal.Hide())"></CloseButton>
+        </ModalHeader>
+        <ModalBody>
+            <MaterialForm Project="Project" OnFormSubmitted="UploadMaterial" />
+        </ModalBody>
+        <ModalFooter>
+            <Alert @ref="UploadAlertSuccess" Color="Color.Success">
+                <AlertMessage>Material uploaded successfully!</AlertMessage>
+            </Alert>
+            <Alert @ref="UploadAlertFailure" Color="Color.Danger">
+                <AlertMessage>Error uploading material.</AlertMessage>
+            </Alert>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+@code {
+    [Parameter]
+    public Project Project { get; set; }
+
+    List<Material> Materials;
+
+    Modal UploadModal;
+    Alert UploadAlertSuccess;
+    Alert UploadAlertFailure;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        Materials = MaterialService.GetAllFromProject(Project);
+    }
+
+    void ShowUploadForm()
+    {
+        UploadAlertFailure.Hide();
+        UploadAlertSuccess.Hide();
+        UploadModal.Show();
+    }
+
+    async void UploadMaterial(MaterialUpload material)
+    {
+        if (await MaterialService.Upload(material))
+        {
+            UploadAlertSuccess.Show();
+            UploadAlertFailure.Hide();
+        }
+        else
+        {
+            UploadAlertSuccess.Hide();
+            UploadAlertFailure.Show();
+        }
+    }
+}
