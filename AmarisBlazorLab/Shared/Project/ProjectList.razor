@@ -146,6 +146,8 @@ else
     void OpenProjectUpdateModal(Project project)
     {
         ProjectToUpdate = new ProjectRegistration(project);
+        Console.WriteLine($"{project} -- {project.ProjectCategories.Count} -- {project.UserProjects.Count}");
+        Console.WriteLine($"{ProjectToUpdate} -- {ProjectToUpdate.Categories.Count} -- {ProjectToUpdate.Contributors.Count}");
         StateHasChanged();
         ProjectUpdateFormModal.Show();
     }

@@ -16,7 +16,14 @@
         <Select TValue="string" SelectedValue="OwnerId" SelectedValueChanged="OnSelectedOwnerChanged">
             @foreach (var user in Users)
             {
-                <SelectItem TValue="string" Value="user.Id">@user.Email</SelectItem>
+                @if (IsOwner(user))
+                {
+                    <SelectItem TValue="string" Value="user.Id" Class="text-success">@user.Email</SelectItem>
+                }
+                else
+                {
+                    <SelectItem TValue="string" Value="user.Id">@user.Email</SelectItem>
+                }
             }
         </Select>
     </Field>
@@ -25,7 +32,14 @@
         <Select @ref="ContributorSelect" Multiple="true" TValue="string" SelectedValues="Contributors" SelectedValuesChanged="OnSelectedContributorsChanged">
             @foreach (var user in Users)
             {
-                <SelectItem TValue="string" Value="user.Id">@user.Email</SelectItem>
+                @if (IsAContributor(user))
+                {
+                    <SelectItem TValue="string" Value="user.Id" Class="text-success">@user.Email</SelectItem>
+                }
+                else
+                {
+                    <SelectItem TValue="string" Value="user.Id">@user.Email</SelectItem>
+                }
             }
         </Select>
     </Field>
@@ -34,8 +48,15 @@
         <Select Multiple="true" TValue="int" SelectedValues="CategoriesId" SelectedValuesChanged="OnSelectedCategoriesChanged">
             @foreach (var category in Categories)
             {
-                <SelectItem TValue="int" Value="category.Id">@category.Name</SelectItem>
-            }
+                @if (IsInCategory(category))
+                {
+                    <SelectItem TValue="int" Value="category.Id" Class="text-success">@category.Name</SelectItem>
+                }
+                else
+                {
+                    <SelectItem TValue="int" Value="category.Id">@category.Name</SelectItem>
+                }
+             }
         </Select>
     </Field>
     <Button Color="Color.Primary" @onclick="FormSubmitted">Submit</Button>
@@ -73,11 +94,13 @@
     // Solution might be to have two different form depending on the action we want to perform
     public void Init(bool force = false)
     {
+        Console.WriteLine("Enters init");
         Users = UserService.GetAll();
         Categories = CategoryService.GetAll();
 
         if (Project == null || force)
         {
+            Console.WriteLine("Project is null");
             Project = new ProjectRegistration();
             Project.Owner = Users[0];
         }
@@ -100,5 +123,20 @@
     void OnSelectedCategoriesChanged(IReadOnlyList<int> categories)
     {
         Project.Categories = Categories.Join(categories, cat => cat.Id, id => id, (cat, id) => cat).ToList();
+    }
+
+    bool IsAContributor(ApplicationUser user)
+    {
+        return Project.Contributors.Any(u => u.Id == user.Id);
+    }
+
+    bool IsInCategory(Category category)
+    {
+        return Project.Categories.Any(c => c.Id == category.Id);
+    }
+
+    bool IsOwner(ApplicationUser user)
+    {
+        return Project.Owner.Id == user.Id;
     }
 }

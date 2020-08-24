@@ -152,6 +152,7 @@ namespace AmarisBlazorLab.Services
 
             if (userProjects.Count > 0)
             {
+                var existingContributors = unitOfWork.UserProjects.GetAll().Where(up => up.ProjectId == project.Id);
                 unitOfWork.UserProjects.AddRange(userProjects);
             }
             unitOfWork.Complete();

@@ -4,9 +4,19 @@
 <Heading Size="HeadingSize.Is1">Lab projects</Heading>
 <Divider />
 
-<LatestProjects />
-<Divider />
-<ProjectList />
+<Container>
+    <Row>
+        <Column ColumnSize="ColumnSize.IsFull">
+            <LatestProjects />
+        </Column>
+    </Row>
+    <Divider />
+    <Row>
+        <Column ColumnSize="ColumnSize.IsFull">
+            <ProjectList />
+        </Column>
+    </Row>
+</Container>
 
 @code {
 
