@@ -54,4 +54,10 @@ else
 
         Users = Service.GetAllWithRoles();
     }
+
+    public void Reload()
+    {
+        Users = Service.GetAllWithRoles();
+        StateHasChanged();
+    }
 }

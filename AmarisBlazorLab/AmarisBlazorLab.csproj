@@ -12,6 +12,8 @@
     <Compile Remove="Data\Migrations\20200820090307_AddMaterialTableAndMaterialTypeTable.Designer.cs" />
     <Compile Remove="Data\Migrations\20200820094331_Test.cs" />
     <Compile Remove="Data\Migrations\20200820094331_Test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200824101241_Test.cs" />
+    <Compile Remove="Data\Migrations\20200824101241_Test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

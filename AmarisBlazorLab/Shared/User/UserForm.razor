@@ -41,14 +41,19 @@
     {
         base.OnInitialized();
 
-        Projects = ProjectService.GetAll();
-        Roles = RoleService.GetAll();
-
+        Init();
         Clear();
     }
 
     [Parameter]
     public EventCallback<UserRegistration> OnFormSubmitted { get; set; }
+
+    public void Init()
+    {
+        Projects = ProjectService.GetAll();
+        Roles = RoleService.GetAll();
+        StateHasChanged();
+    }
 
     public void Clear()
     {
@@ -56,6 +61,7 @@
         UserRegistration.Password = string.Empty;
         UserRegistration.Role = Roles[0].Name;
         UserRegistration.Projects = new List<Project>();
+        StateHasChanged();
     }
 
     private async void FormSubmitted()

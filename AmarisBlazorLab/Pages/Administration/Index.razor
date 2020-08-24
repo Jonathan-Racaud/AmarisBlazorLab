@@ -9,7 +9,7 @@
 <Container>
     <Row>
         <Column ColumnSize="ColumnSize.Is12">
-            <UserList />
+            <UserList @ref="UserList"/>
         </Column>
     </Row>
     <Row Margin="Margin.Is2.FromTop">
@@ -19,7 +19,7 @@
     </Row>
     <Row>
         <Column ColumnSize="ColumnSize.Is12">
-            <ProjectList />
+            <ProjectList @ref="ProjectList"/>
         </Column>
     </Row>
     <Row Margin="Margin.Is2.FromTop">
@@ -37,7 +37,7 @@
             <CloseButton Clicked="@(() => UserFormModal.Hide())"></CloseButton>
         </ModalHeader>
         <ModalBody>
-            <UserForm OnFormSubmitted="CreateUser" />
+            <UserForm @ref="UserForm" OnFormSubmitted="CreateUser" />
         </ModalBody>
         <ModalFooter>
             <Alert @ref="UserCreationAlertSuccess" Color="Color.Success">
@@ -58,7 +58,7 @@
             <CloseButton Clicked="@(() => ProjectFormModal.Hide())"></CloseButton>
         </ModalHeader>
         <ModalBody>
-            <ProjectForm OnFormSubmitted="CreateProject" />
+            <ProjectForm @ref="ProjectForm" OnFormSubmitted="CreateProject" />
         </ModalBody>
         <ModalFooter>
             <Alert @ref="ProjectCreationAlertSuccess" Color="Color.Success">
@@ -80,6 +80,11 @@
     Alert ProjectCreationAlertSuccess;
     Alert ProjectCreationAlertFailure;
 
+    UserList UserList;
+    ProjectList ProjectList;
+    ProjectForm ProjectForm;
+    UserForm UserForm;
+
     private async void CreateUser(UserRegistration user)
     {
         var isCreated = await UserService.Create(user);
@@ -94,6 +99,10 @@
             UserCreationAlertSuccess.Hide();
             UserCreationAlertFailure.Show();
         }
+        UserList.Reload();
+        UserForm.Init();
+        ProjectForm.Init();
+        StateHasChanged();
     }
 
     private void OnUserModalClosed()
@@ -116,6 +125,10 @@
             ProjectCreationAlertSuccess.Hide();
             ProjectCreationAlertFailure.Show();
         }
+        ProjectList.Reload();
+        UserForm.Init();
+        ProjectForm.Init();
+        StateHasChanged();
     }
 
     private void OnProjectModalClosed()

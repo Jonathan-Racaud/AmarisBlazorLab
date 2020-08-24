@@ -48,7 +48,9 @@ namespace AmarisBlazorLab.Services
             {
                 Name = projectIn.Name,
                 Description = projectIn.Description,
-                Owner = projectIn.Owner
+                Owner = projectIn.Owner,
+                UserProjects = new List<UserProject>(),
+                ProjectCategories = new List<ProjectCategory>()
             };
 
             unitOfWork.Projects.Add(project);
@@ -68,7 +70,7 @@ namespace AmarisBlazorLab.Services
                 return false;
             }
 
-            var project = unitOfWork.Projects.Find(p => p.Name == projectIn.Name).Single();
+            var project = unitOfWork.Projects.Find(p => p.Name == projectIn.OldName).Single();
 
             project.Name = projectIn.Name;
             project.Owner = projectIn.Owner;

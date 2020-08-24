@@ -59,8 +59,6 @@
 
     protected override void OnInitialized()
     {
-        Users = UserService.GetAll();
-        Categories = CategoryService.GetAll();
         Init();
     }
 
@@ -75,11 +73,15 @@
     // Solution might be to have two different form depending on the action we want to perform
     public void Init(bool force = false)
     {
+        Users = UserService.GetAll();
+        Categories = CategoryService.GetAll();
+
         if (Project == null || force)
         {
             Project = new ProjectRegistration();
             Project.Owner = Users[0];
         }
+        StateHasChanged();
     }
 
     // For some reason I cannot make the Select binding work with the ApplicationUser or Category or any other user defined types directly

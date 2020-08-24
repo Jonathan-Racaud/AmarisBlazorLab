@@ -12,6 +12,7 @@ namespace AmarisBlazorLab.Core.DTO
     {
         [Required]
         public string Name { get; set; }
+        public string OldName { get; set; }
         public string Description { get; set; }
         [Required]
         public ApplicationUser Owner { get; set; }
@@ -26,6 +27,7 @@ namespace AmarisBlazorLab.Core.DTO
         public ProjectRegistration(Project project)
         {
             Name = project.Name;
+            OldName = project.Name;
             Description = project.Description;
             Owner = project.Owner;
 

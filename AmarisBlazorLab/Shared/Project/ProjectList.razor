@@ -111,6 +111,12 @@ else
         Projects = ProjectService.GetAll();
     }
 
+    public void Reload()
+    {
+        Projects = ProjectService.GetAll();
+        StateHasChanged();
+    }
+
     private void CreateProject(ProjectRegistration project)
     {
         var isCreated = ProjectService.Create(project);
@@ -125,6 +131,8 @@ else
             ProjectCreationAlertSuccess.Hide();
             ProjectCreationAlertFailure.Show();
         }
+        Projects = ProjectService.GetAll();
+        StateHasChanged();
     }
 
     private void OnProjectModalClosed()
@@ -156,5 +164,7 @@ else
             ProjectUpdateAlertSuccess.Hide();
             ProjectUpdateAlertFailure.Show();
         }
+        Projects = ProjectService.GetAll();
+        StateHasChanged();
     }
 }
