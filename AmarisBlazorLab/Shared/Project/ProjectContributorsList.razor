@@ -7,20 +7,14 @@
         <ListGroupItem>
             <Container Fluid="true">
                 <Row>
-                    <Column ColumnSize="ColumnSize.Is10">
+                    <Column ColumnSize="ColumnSize.Is8" Class="align-self-center">
                         @project.User.Email
                     </Column>
-                    <Column ColumnSize="ColumnSize.Is1">
+                    <Column ColumnSize="ColumnSize.Is2" Class="d-flex justify-content-end align-self-center">
                         <Buttons>
                             <Blazorise.Link To='@($"/user/{project.UserId}")' Class="btn">
                                 <Icon Name="IconName.Eye" />
                             </Blazorise.Link>
-                            <AuthorizeView Roles="Admin">
-                                @*There's an issue with intellisense as Link must be an ambiguous tag*@
-                                <Blazorise.Link To='@($"/administration/user&user_id={project.UserId}")' Class="btn">
-                                    <Icon Name="IconName.Edit" />
-                                </Blazorise.Link>
-                            </AuthorizeView>
                         </Buttons>
                     </Column>
                 </Row>

@@ -47,10 +47,10 @@ else
             <ListGroupItem>
                 <Container Fluid="true">
                     <Row>
-                        <Column ColumnSize="ColumnSize.Is10">
+                        <Column ColumnSize="ColumnSize.Is10" Class="align-self-center">
                             @project.Name
                         </Column>
-                        <Column ColumnSize="ColumnSize.Is2" Class="d-flex justify-content-end">
+                        <Column ColumnSize="ColumnSize.Is2" Class="d-flex justify-content-end align-self-center">
                             <Buttons>
                                 <AuthorizeView Roles="Admin">
                                     @*There's an issue with intellisense as Link must be an ambiguous tag*@
