@@ -50,6 +50,7 @@
         Material = new MaterialUpload();
         Types = MaterialService.GetAllTypes();
         UrlTypeId = Types.Single(t => t.Name == "Url").Id;
+        TypeId = Types[0].Id;
     }
 
     void OnChanged(FileChangedEventArgs e)

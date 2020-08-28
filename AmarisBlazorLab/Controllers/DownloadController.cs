@@ -14,7 +14,7 @@ namespace AmarisBlazorLab.Controllers
         [Authorize]
         public async Task<ActionResult> Download(string project, string filename)
         {
-            var filePath = Path.Join(Directory.GetCurrentDirectory(), "wwwroot", "materials", project, filename);
+            var filePath = Path.Join(Directory.GetCurrentDirectory(), "Data", "materials", project, filename);
             var fstream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             
             var data = new byte[fstream.Length];
