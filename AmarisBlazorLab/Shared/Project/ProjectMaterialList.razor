@@ -1,4 +1,6 @@
 ﻿@inject MaterialService MaterialService
+@inject HttpClient HttpClient
+@inject NavigationManager Navigation;
 
 <Row>
     <Column ColumnSize="ColumnSize.IsFull">
@@ -44,7 +46,7 @@ else
                         {
                             <Icon Name="IconName.Link" />
                         }
-                        <Blazorise.Link To="@material.Source">@material.Name</Blazorise.Link>
+                        <Blazorise.Link To="@GetDownloadUrl(material)" Target="Target.Blank">@material.Name</Blazorise.Link>
                     </ListGroupItem>
                 }
             </ListGroup>
@@ -111,5 +113,13 @@ else
         }
         Materials = MaterialService.GetAllFromProject(Project);
         StateHasChanged();
+    }
+
+    string GetDownloadUrl(Material material)
+    {
+        var filename = material.Source.Substring(material.Source.LastIndexOf('\\') + 1);
+        var url = $"api/download/{Project.Name}/{filename}";
+
+        return url;
     }
 }

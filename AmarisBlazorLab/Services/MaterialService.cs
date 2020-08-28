@@ -1,6 +1,8 @@
 ﻿using AmarisBlazorLab.Core;
 using AmarisBlazorLab.Core.Domain;
 using AmarisBlazorLab.Core.DTO;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using System;
 using System.Collections.Generic;
 using System.IO;
