@@ -10,6 +10,7 @@
 }
 else
 {
+    <button class="btn btn-primary" @onclick="Reload">Refresh</button>
     <ListGroup>
         @foreach (var user in Users)
         {
@@ -44,7 +45,10 @@ else
 
     protected override void OnInitialized()
     {
-        base.OnInitialized();
+        Service.Messages.OnUserCreated += () => 
+        {
+            InvokeAsync(this.Reload);
+        };
 
         Users = Service.GetAllWithRoles();
     }

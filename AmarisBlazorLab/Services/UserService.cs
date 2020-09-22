@@ -1,6 +1,7 @@
 ﻿using AmarisBlazorLab.Core;
 using AmarisBlazorLab.Core.Domain;
 using AmarisBlazorLab.Core.DTO;
+using AmarisBlazorLab.Messages;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting.Internal;
 using System;
@@ -12,11 +13,14 @@ namespace AmarisBlazorLab.Services
 {
     public class UserService
     {
+        public Action OnUserCreated { get; set; }
         private readonly IUnitOfWork unitOfWork;
+        public UserMessages Messages { get; set; }
 
-        public UserService(IUnitOfWork unitOfWork)
+        public UserService(IUnitOfWork unitOfWork, UserMessages messages)
         {
             this.unitOfWork = unitOfWork;
+            Messages = messages;
         }
 
         public ApplicationUser Get(string id)
@@ -100,6 +104,7 @@ namespace AmarisBlazorLab.Services
             }
 
             unitOfWork.Complete();
+            Messages.OnUserCreated?.Invoke();
             return true;
         }
 

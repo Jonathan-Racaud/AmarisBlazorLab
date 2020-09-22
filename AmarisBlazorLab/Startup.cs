@@ -22,6 +22,7 @@ using AmarisBlazorLab.Services;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using AmarisBlazorLab.Messages;
 
 namespace AmarisBlazorLab
 {
@@ -55,6 +56,8 @@ namespace AmarisBlazorLab
             services.AddScoped<RoleService>();
             services.AddScoped<CategoryService>();
             services.AddScoped<MaterialService>();
+
+            services.AddSingleton<UserMessages>();
 
             services.AddBlazorise(options =>
             {
