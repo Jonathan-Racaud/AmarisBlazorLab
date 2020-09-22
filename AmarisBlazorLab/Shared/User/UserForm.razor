@@ -20,15 +20,6 @@
             }
         </Select>
     </Field>
-    @*<Field>
-        <FieldLabel>Assign to projects</FieldLabel>
-        <Select TValue="Project" SelectedValues="UserRegistration.Projects" SelectedValuesChanged="@OnSelectedProjectsChanged">
-            @foreach (var project in Projects)
-            {
-                <SelectItem TValue="Project" Value="project">@project.Name</SelectItem>
-            }
-        </Select>
-    </Field>*@
     <Button Color="Color.Primary" @onclick="FormSubmitted">Submit</Button>
 </Form>
 
